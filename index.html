@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Книга с запиской</title>
+<meta name="description" content="Из старой книги выпала записка. Края обуглены, пахнет костром.">
+<meta property="og:title" content="Книга с запиской">
+<meta property="og:description" content="Края обуглены, пахнет костром. Кому она адресована — узнаем 29 ноября.">
+<meta property="og:image" content="oblozhka.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Caveat:wght@600;700&family=Inter:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--night:#0E0B12;--ink:#3A1E0E;--ink-soft:#6B4A33;--ember:#E85D3A;--glow:#FF8A4C;--gold:#D4A052}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{background:radial-gradient(ellipse at 50% 100%,#3A1A0C 0%,#1A0F14 45%,var(--night) 80%) fixed,var(--night);color:#F3EADF;font:16px/1.5 Inter,system-ui,sans-serif;min-height:100vh;overflow-x:hidden}
+#sparks{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:5}
+.screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;transition:opacity .9s}
+.screen.off{opacity:0;pointer-events:none}
+.hidden{display:none!important}
+
+/* 1. Книга */
+.bookbox{position:relative;width:min(100vw,calc(100vh*768/1376));aspect-ratio:768/1376;overflow:hidden}
+.bookbox img,.bookbox video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 1.2s,transform 2.2s cubic-bezier(.45,0,.2,1),filter 1.2s}
+#open,#vid{opacity:0}
+.bookbox.playing #vid{opacity:1;transition:none}
+.bookbox.opened #cover{opacity:0}
+.bookbox.opened #open{opacity:1}
+.bookbox.dive #open{transform:scale(2.4);filter:brightness(2.4) blur(3px);opacity:0}
+.tap{position:absolute;left:0;right:0;bottom:7%;text-align:center;font-family:Caveat,cursive;font-size:clamp(22px,6.5vw,30px);color:#F6D9A8;text-shadow:0 0 14px rgba(255,130,50,.8);animation:pulse 2.4s ease-in-out infinite;pointer-events:none}
+@keyframes pulse{50%{opacity:.4}}
+.bookbox button{position:absolute;inset:0;background:none;border:0;cursor:pointer}
+
+/* 2. Оглавление */
+.sheet{position:relative;width:min(94vw,calc(92vh*693/1244));aspect-ratio:693/1244;container-type:inline-size;
+  transform-origin:0 50%;transition:transform 1.3s cubic-bezier(.5,0,.3,1),opacity 1.3s;filter:drop-shadow(0 2vh 4vh rgba(0,0,0,.7)) drop-shadow(0 0 3vh rgba(255,120,40,.18))}
+.sheet.in{animation:sin 1.2s cubic-bezier(.2,.7,.2,1) both}
+@keyframes sin{from{opacity:0;transform:scale(1.25)}to{opacity:1;transform:none}}
+.sheet.turn{transform:perspective(1400px) rotateY(-175deg);opacity:0}
+.sheet img{display:block;width:100%;height:100%}
+.toc{position:absolute;left:13%;right:13%;top:7%;color:var(--ink);font-family:"Cormorant Garamond",serif}
+.toc .h{font-weight:700;font-size:10cqw;text-align:center;letter-spacing:.04em;margin:0;line-height:1.1}
+.orn{display:block;text-align:center;font-size:5cqw;color:#8A5A2B;margin:1cqw 0 3.5cqw}
+.row{display:flex;align-items:center;gap:2.4cqw;font-size:6.2cqw;margin:0 0 3.6cqw;line-height:1.15}
+.row .dots{flex:1;min-width:4cqw;border-bottom:.6cqw dotted rgba(58,30,14,.4);transform:translateY(-1cqw)}
+.live{cursor:pointer;font-weight:700;padding:2cqw 2.6cqw;margin-left:-2.6cqw;margin-right:-2.6cqw;border-radius:3cqw;border:0;background:none;color:inherit;font-family:inherit;width:calc(100% + 5.2cqw);text-align:left}
+.live .t{text-shadow:0 0 2cqw rgba(255,150,70,.8)}
+.live.pulse{animation:hl 2.4s ease-in-out infinite}
+@keyframes hl{50%{background:rgba(255,170,90,.24)}}
+.live .arrow{display:inline-flex;align-items:center;justify-content:center;flex:0 0 9cqw;height:9cqw;border-radius:50%;font-size:5.4cqw;color:#fff;
+  background:radial-gradient(circle at 35% 30%,#FF9A5C,#E85D3A 55%,#B5361A);box-shadow:0 0 0 0 rgba(232,93,58,.6),0 .6cqw 1.6cqw rgba(120,40,10,.45);
+  animation:nudge 1.3s ease-in-out infinite,ring 1.8s ease-out infinite}
+@keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(1.8cqw)}}
+@keyframes ring{0%{box-shadow:0 0 0 0 rgba(232,93,58,.65),0 .6cqw 1.6cqw rgba(120,40,10,.45)}80%,100%{box-shadow:0 0 0 3.2cqw rgba(232,93,58,0),0 .6cqw 1.6cqw rgba(120,40,10,.45)}}
+.seal{flex:0 0 8cqw;height:8cqw;border-radius:50%;position:relative;background:radial-gradient(circle at 35% 30%,#D2473A,#8E1C17 60%,#5E0F0C);box-shadow:0 .5cqw 1cqw rgba(0,0,0,.4),inset 0 0 0 .9cqw rgba(0,0,0,.16)}
+.seal::after{content:"✕";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:3.6cqw;color:rgba(255,215,195,.6);font-family:serif}
+.blur{filter:blur(1cqw);opacity:.7;white-space:nowrap;overflow:hidden}
+.sink{-webkit-mask-image:linear-gradient(to right,#000 30%,transparent 95%);mask-image:linear-gradient(to right,#000 30%,transparent 95%)}
+.sink.on{opacity:.55}
+.hand-toc{position:absolute;left:10%;right:38%;top:51%;font-family:Caveat,cursive;font-weight:700;font-size:5.8cqw;line-height:1.12;color:#6A2A10;transform:rotate(-4deg);margin:0}
+
+/* выжигание */
+.c{opacity:0;display:inline-block}
+.c.on{animation:burn .8s ease forwards}
+@keyframes burn{0%{opacity:0;color:#FFF4D6;text-shadow:0 0 12px #FF8A4C;filter:blur(3px)}35%{opacity:1;color:#FFC070;text-shadow:0 0 8px #FF6A2A}100%{opacity:1;color:inherit;text-shadow:0 0 4px rgba(255,120,40,.3);filter:none}}
+.fade{opacity:0;transition:opacity 1.2s}
+.fade.on{opacity:1}
+
+/* 3. Список */
+#s-list{position:relative;inset:auto;display:block;min-height:100vh;padding:5vh 12px 60px}
+.paper{max-width:520px;margin:0 auto;color:var(--ink);
+  border-style:solid;border-width:34px 64px 64px 34px;border-image:url(list-spisok.webp) 56 125 125 56 fill stretch;
+  filter:drop-shadow(0 18px 40px rgba(0,0,0,.6)) drop-shadow(0 0 24px rgba(255,120,40,.15));animation:pin 1s .2s cubic-bezier(.2,.7,.2,1) both}
+@keyframes pin{from{opacity:0;transform:translateY(30px) rotate(-2deg)}to{opacity:1;transform:none}}
+.paper-in{padding:6px 0 0 4px;margin-right:-30px}
+.note{font-family:Caveat,cursive;font-weight:700;font-size:26px;line-height:1.2;color:#2A1A10;margin:0}
+.note .w{opacity:0;display:inline-block;filter:blur(3px);transition:opacity .5s,filter .5s}
+.note .w.on{opacity:1;filter:none}
+.smell{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:17px;color:var(--ink-soft);margin:12px 0 0}
+.paper h2{font-family:"Cormorant Garamond",serif;font-weight:700;font-size:26px;line-height:1.15;margin:26px 0 4px;color:var(--ink)}
+.muted{font-size:14.5px;color:var(--ink-soft);margin:0 0 14px}
+.tiers{display:grid;gap:8px}
+.tier{display:block;width:100%;text-align:left;border:1.5px solid rgba(58,30,14,.25);background:rgba(255,248,235,.55);color:var(--ink);border-radius:12px;padding:12px 14px;font:inherit;cursor:pointer;transition:.2s}
+.tier b{display:block;font-size:16px}
+.tier span{font-size:13.5px;color:var(--ink-soft)}
+.tier.on{border-color:var(--ember);background:rgba(255,226,200,.75);box-shadow:0 0 0 3px rgba(232,93,58,.15)}
+.group h3{font-size:11.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#9A5A22;margin:18px 0 8px}
+.item{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;background:rgba(255,248,235,.55);border:1.5px solid rgba(58,30,14,.18);border-radius:12px;padding:11px 12px;margin:0 0 7px;color:var(--ink);font:inherit;cursor:pointer;transition:.2s}
+.item .box{flex:0 0 24px;height:24px;border-radius:7px;border:2px solid #9B7E66;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;margin-top:1px;transition:.2s}
+.item b{display:block;font-weight:700;font-size:15.5px}
+.item small{display:block;color:var(--ink-soft);font-size:13px;margin-top:1px}
+.item.have{opacity:.5}
+.item.have .box{background:var(--ember);border-color:var(--ember)}
+.item.have .box::after{content:"✓"}
+.legend{font-size:13px;color:var(--ink-soft);margin:8px 0 0}
+.btn{display:block;width:100%;border:0;border-radius:12px;padding:14px 16px;font:inherit;font-weight:800;font-size:16px;cursor:pointer;background:var(--ember);color:#fff;margin-top:16px;box-shadow:0 8px 22px rgba(232,93,58,.3)}
+.btn.ghost{background:transparent;border:1.5px solid rgba(58,30,14,.35);box-shadow:none;color:var(--ink);margin-top:8px}
+.result{background:rgba(255,248,235,.7);border:1.5px dashed rgba(58,30,14,.3);border-radius:12px;padding:14px 16px}
+.result h4{margin:0 0 6px;font-size:15px}
+.result ul{margin:0;padding-left:20px}
+.result li{margin:3px 0}
+.result p{margin:0;color:var(--ink-soft)}
+.safe{border-left:4px solid var(--ember);background:rgba(232,93,58,.08);border-radius:8px;padding:10px 12px;font-size:14px;margin-top:12px}
+.step{display:none}
+.step.show{display:block;animation:rise .6s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.burnt{margin:30px 0 4px;text-align:center;font-family:Caveat,cursive;font-weight:700;font-size:27px;line-height:1.2;color:#B8441A;text-shadow:0 0 10px rgba(255,138,76,.45)}
+.after{text-align:center;color:var(--ink-soft);font-size:14px;margin:8px 0 0;opacity:0;transition:opacity 1.2s}
+.after.on{opacity:1}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(30px);background:#F3EADF;color:#15121A;font-weight:700;border-radius:12px;padding:10px 16px;opacity:0;transition:.3s;pointer-events:none;font-size:14px;z-index:9}
+.toast.on{opacity:1;transform:translateX(-50%)}
+.club{text-align:center;font-size:12px;color:#8C7F8F;margin-top:26px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.c,.fade,.note .w,.after{opacity:1;filter:none}}
+</style>
+</head>
+<body>
+<canvas id="sparks"></canvas>
+
+<!-- 1. Книга -->
+<section class="screen" id="s-book">
+  <div class="bookbox" id="bookbox">
+    <img id="cover" src="oblozhka.jpg" alt="Старая книга с бронзовым шефом на обложке">
+    <video id="vid" src="raskrytie.mp4" muted playsinline webkit-playsinline preload="auto"></video>
+    <img id="open" src="raskrytie-final.jpg" alt="">
+    <div class="tap" id="tap1">нажми, чтобы открыть</div>
+    <button id="btn-open" aria-label="Открыть книгу"></button>
+  </div>
+</section>
+
+<!-- 2. Оглавление -->
+<section class="screen off hidden" id="s-toc">
+  <div class="sheet" id="sheet">
+    <img src="list-oglavlenie.webp" alt="">
+    <div class="toc">
+      <p class="h"><span class="bw">Оглавление</span></p>
+      <span class="orn fade">❦</span>
+      <button class="row live fade" id="go"><span class="t">Записка.<br>Проверь свою кухню</span><span class="dots"></span><span class="arrow">➜</span></button>
+      <div class="row fade"><span class="seal"></span><span class="blur">Глава о том, как</span><span class="dots"></span></div>
+      <div class="row fade"><span class="seal"></span><span class="blur">Глава, где жар</span><span class="dots"></span></div>
+      <div class="row fade sink"><span class="seal"></span><span class="blur">Глава без</span><span class="dots"></span></div>
+    </div>
+    <p class="hand-toc"><span class="bw">Остальные главы ещё у костра. Будут приходить по одной.</span></p>
+  </div>
+</section>
+
+<!-- 3. Записка и список -->
+<section class="screen hidden" id="s-list">
+  <div class="paper"><div class="paper-in">
+    <p class="note" id="note">Плита есть? Духовка есть? Значит, справишься. Готовить будешь не ты — жар и время. Проверь, что у тебя есть. Остальное докупи заранее.</p>
+    <p class="smell fade" id="smell">Края обуглены. Пахнет костром. Подписи нет.</p>
+
+    <section class="step" id="st-tier">
+      <h2>Сколько глав тебе откроется?</h2>
+      <p class="muted">От этого зависит, что понадобится на кухне.</p>
+      <div class="tiers">
+        <button class="tier" data-tier="1"><b>Стандарт</b><span>2 урока из главы</span></button>
+        <button class="tier" data-tier="2"><b>ПРО</b><span>4 урока из главы</span></button>
+        <button class="tier" data-tier="3"><b>Вся тема</b><span>все уроки главы и то, что спрятано в конце</span></button>
+      </div>
+    </section>
+
+    <section class="step" id="st-kitchen">
+      <h2>Проверь свою кухню</h2>
+      <p class="muted">Отметь то, что уже есть. Чего нет — попадёт в список покупок.</p>
+      <div id="groups"></div>
+      <p class="legend">Профессиональное оборудование не нужно. Только плита, духовка и мелочи из этого списка.</p>
+      <button class="btn" id="go-list">Собрать мой список</button>
+    </section>
+
+    <section class="step" id="st-list">
+      <h2>Твой список</h2>
+      <p class="muted">Лучше купить сейчас, пока в магазинах нет предновогодней толкучки.</p>
+      <div class="result" id="result"></div>
+      <div class="safe" id="safe" hidden>Термощуп в этом списке не для красоты: он отвечает за безопасность мяса. Его не пропускаем.</div>
+      <button class="btn" id="save">Сохранить картинкой</button>
+      <button class="btn ghost" id="copy">Скопировать текстом</button>
+      <button class="btn ghost" id="back">Изменить отметки</button>
+      <p class="burnt" id="burnt">Кому адресована записка — узнаем 29 ноября</p>
+      <p class="after" id="after">Что приготовят из этого списка — пока секрет.</p>
+    </section>
+  </div></div>
+  <p class="club">Клуб Планета X · Ленивая хозяйка 2.0</p>
+</section>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  var $=function(s){return document.querySelector(s)};
+  var ITEMS=[
+    {id:'form',  t:1,g:'base',name:'Глубокая форма для запекания',why:'стекло или керамика, в ней пройдёт полмесяца'},
+    {id:'foil',  t:1,g:'base',name:'Фольга',why:'накрыть и забыть'},
+    {id:'brush', t:1,g:'base',name:'Силиконовая кисточка',why:'для тонкого слоя там, где руками не выйдет'},
+    {id:'loaf',  t:2,g:'more',name:'Форма для кекса или хлеба',why:'прямоугольная'},
+    {id:'film',  t:2,g:'more',name:'Пищевая плёнка',why:'чтобы всё легло ровно'},
+    {id:'pie',   t:3,g:'full',name:'Разъёмная форма для пирога — с дном',why:'дно обязательно: тесто будет жидкое и не должно вытечь. Или любая цельная круглая с высоким бортом'},
+    {id:'pot',   t:3,g:'full',name:'Кастрюля или сотейник с крышкой',why:'такие, что можно ставить в духовку на несколько часов'},
+    {id:'twine', t:3,g:'full',name:'Кулинарный шпагат',why:'хлопковый, без красителей: держит форму в духовке'},
+    {id:'parch', t:3,g:'full',name:'Пергамент для выпечки',why:'кое-что завернём красиво'},
+    {id:'probe', t:3,g:'full',name:'Термощуп',why:'кухонный термометр со щупом, отвечает за безопасность мяса'},
+    {id:'zip',   t:3,g:'full',name:'Плотные пакеты с застёжкой zip',why:'для долгой тёплой ванны'},
+    {id:'nitrit',t:3,g:'full',name:'Нитритная соль',why:'строго по рецепту, обычной солью не заменять'},
+    {id:'sv',    t:3,g:'full',name:'Сувид — по желанию',why:'есть — отлично. Нет — справимся кастрюлей и термощупом',opt:true}
+  ];
+  var GROUPS={base:'Пригодится всем',more:'Добавится в ПРО и всей теме',full:'Только во всей теме'};
+  var KEY='lh2-kniga-v1',state={tier:0,have:{},seen:false};
+  if(/reset/.test(location.search)){try{localStorage.removeItem(KEY)}catch(e){}}
+  try{var s=JSON.parse(localStorage.getItem(KEY)||'null');if(s&&typeof s==='object'){state.tier=s.tier||0;state.have=s.have||{};state.seen=!!s.seen}}catch(e){}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
+  function toast(t){var x=$('#toast');x.textContent=t;x.classList.add('on');setTimeout(function(){x.classList.remove('on')},2000)}
+
+  // выжигаемые строки — по буквам
+  document.querySelectorAll('.bw,#burnt').forEach(function(el){
+    el.innerHTML=el.textContent.split(' ').map(function(w){return '<span style="white-space:nowrap">'+w.split('').map(function(ch){return '<span class="c">'+ch+'</span>'}).join('')+'</span>'}).join(' ');
+  });
+  function burn(el,start){var cs=[].slice.call(el.querySelectorAll('.c')),mid=cs.length/2,max=start;
+    cs.forEach(function(c,i){var d=start+Math.abs(i-mid)*40+Math.random()*360;max=Math.max(max,d);setTimeout(function(){c.classList.add('on')},d)});return max}
+
+  function swap(from,to){var a=$(from),b=$(to);a.classList.add('off');b.classList.remove('hidden');
+    requestAnimationFrame(function(){b.classList.remove('off')});setTimeout(function(){a.classList.add('hidden')},900)}
+
+  // 1 → 2: книга раскрывается, ныряем в разворот
+  var opening=false;
+  $('#btn-open').addEventListener('click',function(){
+    if(opening)return;opening=true;$('#tap1').style.display='none';
+    var bb=$('#bookbox'),v=$('#vid'),done=false;
+    function finish(){if(done)return;done=true;bb.classList.add('opened');
+      setTimeout(function(){bb.classList.add('dive')},500);
+      setTimeout(function(){swap('#s-book','#s-toc');showToc()},1500)}
+    v.addEventListener('ended',finish);
+    var pr=v.play();
+    if(pr&&pr.then)pr.then(function(){bb.classList.add('playing');setTimeout(function(){$('#cover').style.opacity=0},50)},function(){finish()});
+    else{bb.classList.add('playing')}
+    setTimeout(finish,9000); // страховка, если видео зависло
+  });
+
+  function showToc(){
+    $('#sheet').classList.add('in');
+    var t=burn($('.toc .h'),900),f=[].slice.call(document.querySelectorAll('#s-toc .fade'));
+    f.forEach(function(el,i){setTimeout(function(){el.classList.add('on')},t+300+i*450)});
+    var t2=burn($('.hand-toc'),t+300+f.length*450+400);
+    setTimeout(function(){$('#go').classList.add('pulse')},t2+300);
+  }
+
+  // 2 → 3: лист переворачивается
+  $('#go').addEventListener('click',function(){
+    $('#sheet').classList.add('turn');
+    setTimeout(function(){
+      $('#s-toc').classList.add('hidden');var l=$('#s-list');l.classList.remove('hidden');window.scrollTo(0,0);
+      state.seen=true;save();writeNote();
+    },1000);
+  });
+
+  var note=$('#note'),words=note.textContent.split(' ');
+  note.innerHTML=words.map(function(w){return '<span class="w">'+w+'</span>'}).join(' ');
+  function writeNote(instant){
+    var sp=note.querySelectorAll('.w'),i=0;
+    if(instant){sp.forEach(function(w){w.classList.add('on')});$('#smell').classList.add('on');return}
+    (function next(){
+      if(i>=sp.length){$('#smell').classList.add('on');setTimeout(function(){show('#st-tier')},1100);return}
+      sp[i].classList.add('on');var w=sp[i].textContent;i++;
+      var d=/[.?!—]$/.test(w)||w==='—'?480:(130+Math.random()*150);if(Math.random()<.08)d+=360;setTimeout(next,d);
+    })();
+  }
+  function show(id){var el=$(id);el.classList.add('show');setTimeout(function(){el.scrollIntoView({behavior:'smooth',block:'start'})},80)}
+
+  document.querySelectorAll('.tier').forEach(function(b){
+    b.addEventListener('click',function(){state.tier=+b.dataset.tier;save();markTier();renderKitchen();show('#st-kitchen')});
+  });
+  function markTier(){document.querySelectorAll('.tier').forEach(function(x){x.classList.toggle('on',+x.dataset.tier===state.tier)})}
+  function visible(){return ITEMS.filter(function(it){return it.t<=state.tier})}
+  function renderKitchen(){
+    var html='',cur='';
+    visible().forEach(function(it){
+      if(it.g!==cur){if(cur)html+='</div>';cur=it.g;html+='<div class="group"><h3>'+GROUPS[it.g]+'</h3>'}
+      html+='<button class="item'+(state.have[it.id]?' have':'')+'" data-id="'+it.id+'"><span class="box"></span><span><b>'+it.name+'</b><small>'+it.why+'</small></span></button>';
+    });
+    if(cur)html+='</div>';
+    $('#groups').innerHTML=html;
+    $('#groups').querySelectorAll('.item').forEach(function(b){b.addEventListener('click',function(){var id=b.dataset.id;state.have[id]=!state.have[id];save();b.classList.toggle('have',!!state.have[id])})});
+  }
+
+  var need=[],must=[],opt=[],listText='';
+  $('#go-list').addEventListener('click',function(){
+    need=visible().filter(function(it){return !state.have[it.id]});
+    must=need.filter(function(it){return !it.opt});opt=need.filter(function(it){return it.opt});
+    var html;
+    if(!must.length&&!opt.length){html='<p>Всё уже есть. Твоя кухня готова — осталось дождаться 29 ноября.</p>';listText='Всё для книги уже есть на кухне.'}
+    else{
+      html=must.length?'<h4>Докупить</h4><ul>'+must.map(function(it){return '<li>'+it.name+'</li>'}).join('')+'</ul>':'<p>Главное уже есть.</p>';
+      if(opt.length)html+='<p style="margin-top:8px">По желанию: сувид</p>';
+      listText='Докупить к декабрю:\n'+must.map(function(it){return '— '+it.name}).join('\n')+(opt.length?'\nПо желанию: сувид':'');
+    }
+    $('#result').innerHTML=html;$('#safe').hidden=!(state.tier>=3&&!state.have.probe);
+    show('#st-list');setTimeout(burnLast,900);
+  });
+  $('#back').addEventListener('click',function(){show('#st-kitchen')});
+
+  var burned=false;
+  function burnLast(){if(burned)return;burned=true;var t=burn($('#burnt'),0);setTimeout(function(){$('#after').classList.add('on')},t+600)}
+
+  $('#copy').addEventListener('click',function(){
+    function ok(){toast('Список скопирован')}
+    function fb(){var ta=document.createElement('textarea');ta.value=listText;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');ok()}catch(e){}document.body.removeChild(ta)}
+    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(listText).then(ok,fb);else fb();
+  });
+
+  // Сохранить картинкой: рисуем лист с её списком
+  var paperImg=new Image();paperImg.src='list-spisok.webp';
+  function wrap(cx,text,maxW){var ws=text.split(' '),lines=[],cur='';ws.forEach(function(w){var t=cur?cur+' '+w:w;if(cx.measureText(t).width>maxW&&cur){lines.push(cur);cur=w}else cur=t});if(cur)lines.push(cur);return lines}
+  $('#save').addEventListener('click',function(){
+    (document.fonts?document.fonts.ready:Promise.resolve()).then(function(){
+      var W=1080,pad=130,cv=document.createElement('canvas'),cx=cv.getContext('2d');
+      cx.font='700 46px Inter';
+      var rows=[];must.forEach(function(it){rows=rows.concat(wrap(cx,it.name,W-pad*2-70).map(function(l,i){return{l:l,first:i===0}}))});
+      var H=Math.max(1350,520+rows.length*74+(opt.length?110:0)+260);
+      cv.width=W;cv.height=H;
+      cx.fillStyle='#120D14';cx.fillRect(0,0,W,H);
+      // лист: 9 частей
+      var iw=paperImg.naturalWidth,ih=paperImg.naturalHeight,s=[56,125,125,56],d=[90,200,200,90];
+      function part(sx,sy,sw,sh,dx,dy,dw,dh){if(sw>0&&sh>0&&dw>0&&dh>0)cx.drawImage(paperImg,sx,sy,sw,sh,dx,dy,dw,dh)}
+      var m=30,X=[0,s[3],iw-s[1],iw],Y=[0,s[0],ih-s[2],ih],DX=[m,m+d[3],W-m-d[1],W-m],DY=[m,m+d[0],H-m-d[2],H-m];
+      for(var r=0;r<3;r++)for(var c=0;c<3;c++)part(X[c],Y[r],X[c+1]-X[c],Y[r+1]-Y[r],DX[c],DY[r],DX[c+1]-DX[c],DY[r+1]-DY[r]);
+      cx.fillStyle='#3A1E0E';cx.textAlign='center';
+      cx.font='700 76px "Cormorant Garamond"';cx.fillText('Мой список к декабрю',W/2,250);
+      cx.font='700 44px Caveat';cx.fillStyle='#8A4A22';cx.fillText('из записки, что пахла костром',W/2,315);
+      cx.textAlign='left';cx.fillStyle='#3A1E0E';var y=430;
+      if(!rows.length){cx.font='500 44px Inter';cx.fillText('Всё уже есть на кухне!',pad,y)}
+      rows.forEach(function(r){cx.font='700 46px Inter';if(r.first){cx.strokeStyle='#9B7E66';cx.lineWidth=5;cx.strokeRect(pad,y-38,40,40)}cx.fillText(r.l,pad+70,y);y+=74});
+      if(opt.length){y+=30;cx.font='500 40px Inter';cx.fillStyle='#6B4A33';cx.fillText('По желанию: сувид',pad,y);y+=60}
+      cx.textAlign='center';cx.font='700 50px Caveat';cx.fillStyle='#B8441A';cx.fillText('Кому адресована записка — узнаем 29 ноября',W/2,H-230);
+      cx.font='600 30px Inter';cx.fillStyle='#8C6A50';cx.fillText('Клуб Планета X · Ленивая хозяйка 2.0',W/2,H-170);
+      cv.toBlob(function(blob){
+        var file=new File([blob],'spisok-k-dekabryu.png',{type:'image/png'});
+        if(navigator.canShare&&navigator.canShare({files:[file]})){navigator.share({files:[file],title:'Мой список к декабрю'}).catch(function(){})}
+        else{var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='spisok-k-dekabryu.png';document.body.appendChild(a);a.click();a.remove();toast('Картинка сохранена')}
+      },'image/png');
+    });
+  });
+
+  // вернулась — сразу к своему списку
+  if(state.seen&&state.tier){
+    $('#s-book').classList.add('hidden');$('#s-list').classList.remove('hidden');
+    writeNote(true);$('#st-tier').classList.add('show');markTier();renderKitchen();$('#st-kitchen').classList.add('show');
+  }
+  // предпросмотр для проверки: ?toc / ?list (+still — без анимаций)
+  if(/still/.test(location.search)){var st=document.createElement('style');st.textContent='*{transition:none!important;animation:none!important}.c,.fade,.note .w,.after{opacity:1!important;filter:none!important}';document.head.appendChild(st)}
+  if(/[?&]toc/.test(location.search)){$('#s-book').classList.add('hidden');$('#s-toc').classList.remove('hidden','off');showToc()}
+  if(/[?&]list/.test(location.search)){$('#s-book').classList.add('hidden');$('#s-list').classList.remove('hidden');writeNote(true);state.tier=3;markTier();renderKitchen();$('#st-tier').classList.add('show');$('#st-kitchen').classList.add('show')}
+
+  // искры
+  var cv=$('#sparks'),cx=cv.getContext('2d'),P=[];
+  function size(){cv.width=innerWidth*devicePixelRatio;cv.height=innerHeight*devicePixelRatio}size();addEventListener('resize',size);
+  (function loop(){if(P.length<60&&Math.random()<.5)P.push({x:Math.random()*cv.width,y:cv.height+10,vx:(Math.random()-.5)*.6,vy:-(0.6+Math.random()*1.4)*devicePixelRatio,r:(0.6+Math.random()*1.5)*devicePixelRatio,l:1});
+    cx.clearRect(0,0,cv.width,cv.height);
+    P.forEach(function(p){p.x+=p.vx+Math.sin(p.y/40)*.3;p.y+=p.vy;p.l-=.004;cx.beginPath();cx.arc(p.x,p.y,p.r,0,7);cx.fillStyle='rgba(255,'+(130+(p.r*20|0))+',50,'+Math.max(p.l,0)*.8+')';cx.fill()});
+    P=P.filter(function(p){return p.l>0&&p.y>-10});requestAnimationFrame(loop)})();
+})();
+</script>
+</body>
+</html>
