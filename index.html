@@ -62,6 +62,35 @@ body{background:radial-gradient(ellipse at 50% 100%,#3A1A0C 0%,#1A0F14 45%,var(-
   animation:nudge 1.3s ease-in-out infinite,ring 1.8s ease-out infinite}
 @keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(1.8cqw)}}
 @keyframes ring{0%{box-shadow:0 0 0 0 rgba(232,93,58,.65),0 .6cqw 1.6cqw rgba(120,40,10,.45)}80%,100%{box-shadow:0 0 0 3.2cqw rgba(232,93,58,0),0 .6cqw 1.6cqw rgba(120,40,10,.45)}}
+.ok{font-style:normal;color:#3E7A3A;font-family:Inter,sans-serif;font-weight:800;font-size:5cqw;margin-left:1cqw}
+.row.locked .t{font-weight:700}
+.row.locked small{display:block;font:600 3.4cqw Inter,sans-serif;color:#9A5A22;margin-top:.6cqw}
+a.row.live{text-decoration:none}
+.tocbtn{display:block;margin:12px auto 0;background:rgba(255,248,235,.75);border:1.5px solid rgba(58,30,14,.3);color:#3A1E0E;font:700 14px Inter,system-ui,sans-serif;border-radius:12px;padding:10px 16px;cursor:pointer}
+#s-toc{background:#140c08}
+.adv{position:relative;width:min(100vw,calc(100vh*720/1260));height:100vh;max-height:100vh;margin:0 auto;background:url(advent-fon.webp) center/cover;overflow:hidden;container-type:inline-size}
+.ah{position:absolute;left:0;right:0;top:6.5%;text-align:center;z-index:3}
+.msub{font-family:Caveat,cursive;font-size:4.6cqw;color:#F6D9A8;text-shadow:0 1px 4px #000;margin-top:.4cqw}
+.mk{font:700 2.7cqw Inter,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#E9C98E;text-shadow:0 1px 4px #000}
+.mh{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:9.5cqw;line-height:1.05;margin:1cqw 0 0;background:linear-gradient(180deg,#FFF1C9,#E9B865 55%,#B9782E);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 2px 4px rgba(0,0,0,.7))}
+.wires{position:absolute;inset:0;width:100%;height:100%;z-index:1;overflow:visible}
+.bulb{animation:bl 2.4s ease-in-out infinite}
+@keyframes bl{0%,100%{opacity:.55}50%{opacity:1}}
+.env{position:absolute;transform:translate(-50%,0) rotate(var(--r,0deg));transform-origin:50% 0;width:24%;z-index:2;background:none;border:0;padding:0;cursor:pointer;opacity:0;transition:opacity .5s}
+.env.in{opacity:1;animation:sway 4.5s ease-in-out infinite;animation-delay:var(--d,0s)}
+@keyframes sway{0%,100%{transform:translate(-50%,0) rotate(var(--r,0deg))}50%{transform:translate(-50%,0) rotate(calc(var(--r,0deg) * -1))}}
+.env .ei{position:relative;display:block}
+.env img{width:100%;display:block;filter:drop-shadow(0 1.5cqw 1.6cqw rgba(0,0,0,.6))}
+.env.open img{filter:drop-shadow(0 0 3cqw rgba(255,190,90,.75)) drop-shadow(0 1.5cqw 1.6cqw rgba(0,0,0,.6))}
+.env .num{position:absolute;left:50%;transform:translate(-50%,-50%);font-family:'Cormorant Garamond',serif;font-weight:700;font-size:5.6cqw;line-height:1;color:#FFE08A;text-shadow:0 0 .6cqw rgba(0,0,0,.9),0 .2cqw .3cqw rgba(0,0,0,.9);pointer-events:none;z-index:2}
+.env .wax{position:absolute;left:50%;width:30%;aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle at 35% 30%,#C83A2E,#8E1C17 58%,#5A0E0B);box-shadow:0 .4cqw .9cqw rgba(0,0,0,.55),inset 0 0 0 .7cqw rgba(0,0,0,.18),0 0 0 .45cqw #7A1712;pointer-events:none;z-index:1}
+.env .lab{display:block;margin-top:.6cqw;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:3.6cqw;line-height:1.1;color:#FFE6C4;text-shadow:0 1px 4px #000;text-align:center}
+.env.next .lab small{color:#FF9A5C}
+.env .lab small{display:block;font:600 2.6cqw Inter,sans-serif;color:#E9C98E}
+.env.finale .num{color:#3A2410;text-shadow:none}
+.env.finale .seal-gold{position:absolute;left:50%;width:30%;z-index:1;aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle at 35% 30%,#FFE9A8,#E2B04E 55%,#9C6B1E);box-shadow:0 .4cqw .8cqw rgba(0,0,0,.5);pointer-events:none}
+.atip{position:absolute;left:50%;bottom:4%;transform:translateX(-50%);background:rgba(20,12,8,.85);border:1px solid rgba(233,201,142,.4);color:#FFE6C4;font:600 3.4cqw Inter,sans-serif;border-radius:3cqw;padding:2cqw 4cqw;opacity:0;transition:opacity .3s;z-index:5;white-space:nowrap;pointer-events:none}
+.atip.on{opacity:1}
 .seal{flex:0 0 8cqw;height:8cqw;border-radius:50%;position:relative;background:radial-gradient(circle at 35% 30%,#D2473A,#8E1C17 60%,#5E0F0C);box-shadow:0 .5cqw 1cqw rgba(0,0,0,.4),inset 0 0 0 .9cqw rgba(0,0,0,.16)}
 .seal::after{content:"✕";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:3.6cqw;color:rgba(255,215,195,.6);font-family:serif}
 .blur{filter:blur(1cqw);opacity:.7;white-space:nowrap;overflow:hidden}
@@ -141,18 +170,11 @@ body{background:radial-gradient(ellipse at 50% 100%,#3A1A0C 0%,#1A0F14 45%,var(-
 
 <!-- 2. Оглавление -->
 <section class="screen off hidden" id="s-toc">
-  <div class="sheet" id="sheet">
-    <img src="list-oglavlenie.webp" alt="">
-    <div class="toc">
-      <p class="kick fade">Ленивая хозяйка 2.0</p>
-      <p class="h"><span class="bw">Оглавление</span></p>
-      <span class="orn fade">❦</span>
-      <button class="row live fade" id="go"><span class="t">Записка.<br>Проверь свою кухню</span><span class="dots"></span><span class="arrow">➜</span></button>
-      <div class="row fade"><span class="seal"></span><span class="blur">Глава о том, как</span><span class="dots"></span></div>
-      <div class="row fade"><span class="seal"></span><span class="blur">Глава, где жар</span><span class="dots"></span></div>
-      <div class="row fade sink"><span class="seal"></span><span class="blur">Глава без</span><span class="dots"></span></div>
-    </div>
-    <p class="hand-toc"><span class="bw">Остальные главы ещё у костра. Будут приходить по одной.</span></p>
+  <div class="adv" id="adv">
+    <div class="ah"><div class="mk">Ленивая хозяйка 2.0 · Клуб Планета X</div><h2 class="mh">Тайные записки</h2><div class="msub">детективная игра · история между уроками</div></div>
+    <svg class="wires" id="wires" preserveAspectRatio="none"></svg>
+    <div id="envs"></div>
+    <div class="atip" id="atip"></div>
   </div>
 </section>
 
@@ -192,6 +214,7 @@ body{background:radial-gradient(ellipse at 50% 100%,#3A1A0C 0%,#1A0F14 45%,var(-
       <p class="after" id="after">Что приготовят из этого списка — пока секрет.</p>
     </section>
   </div></div>
+  <button class="tocbtn" id="totoc">📖 К оглавлению книги</button>
   <button class="again" id="again">↻ Открыть книгу сначала</button>
   <p class="club">Клуб Планета X · Ленивая хозяйка 2.0</p>
 </section>
@@ -229,6 +252,51 @@ body{background:radial-gradient(ellipse at 50% 100%,#3A1A0C 0%,#1A0F14 45%,var(-
   function burn(el,start){var cs=[].slice.call(el.querySelectorAll('.c')),mid=cs.length/2,max=start;
     cs.forEach(function(c,i){var d=start+Math.abs(i-mid)*40+Math.random()*360;max=Math.max(max,d);setTimeout(function(){c.classList.add('on')},d)});return max}
 
+
+  /* ===== КАРТА КОНВЕРТОВ. Открываю главу вручную: open:true (и кладу её в папку url) ===== */
+  var CH=[
+    {title:'Записка',sub:'Проверь свою кухню',open:true,act:'list'},
+    {title:'Часть первая',sub:'Новый год у тебя',url:'glava-1/',open:false,when:'29 ноября, после эфира'},
+    {title:'Часть вторая',when:'2 декабря'},
+    {title:'Часть третья',when:'6 декабря'},
+    {title:'Часть четвёртая',when:'9 декабря'},
+    {title:'Часть пятая',when:'13 декабря'},
+    {title:'Часть шестая',when:'16 декабря'},
+    {title:'Часть седьмая',when:'20 декабря'},
+    {title:'Часть восьмая',when:'23 декабря'},
+    {title:'Финал',when:'когда откроются все восемь',finale:true}
+  ];
+  // ряды гирлянды: y — высота крепления (в % от высоты), sag — провис
+  var ROWS=[{y:23,sag:5,n:3},{y:42,sag:5,n:3},{y:61,sag:5,n:3},{y:79,sag:3,n:1}];
+  var ROMAN=['','I','II','III','IV','V','VI','VII','VIII'];
+  function renderChapters(){
+    var adv=$('#adv');if(!adv)return;
+    var svg=$('#wires'),envs=$('#envs'),W=100,H=100;
+    svg.setAttribute('viewBox','0 0 100 100');
+    var sv='',k=0,html='';
+    ROWS.forEach(function(r,ri){
+      var x0=4,x1=96;
+      sv+='<path d="M'+x0+' '+r.y+' Q50 '+(r.y+r.sag*2)+' '+x1+' '+r.y+'" stroke="#2A1C12" stroke-width="2.2" fill="none" vector-effect="non-scaling-stroke"/>';
+      for(var b=0;b<=12;b++){var t=b/12,x=x0+(x1-x0)*t,y=(1-t)*(1-t)*r.y+2*(1-t)*t*(r.y+r.sag*2)+t*t*r.y;
+        sv+='<circle class="bulb" cx="'+x+'" cy="'+(y+.7)+'" r=".9" fill="'+['#FFD27A','#FF9A5C','#FFF1C9'][b%3]+'" style="animation-delay:'+(b*0.2)+'s;filter:drop-shadow(0 0 1.2px #FFB45A)"/>'}
+      for(var e=0;e<r.n;e++){
+        var c=CH[k];if(!c)break;
+        var t=r.n===1?.5:(e+1)/(r.n+1),x=x0+(x1-x0)*t,y=(1-t)*(1-t)*r.y+2*(1-t)*t*(r.y+r.sag*2)+t*t*r.y;
+        var open=!!c.open,img=open?'advent-otkryt.webp':'advent-zakryt.webp';
+        var cls='env'+(open?' open':'')+(c.finale?' finale':'');
+        var isNext=!open&&!c.finale&&!html.match(/ next/);if(isNext)cls+=' next';
+        var sealY=open?'78%':'64%';
+        var mark=c.finale?'<span class="seal-gold" style="top:'+sealY+'"></span><span class="num" style="top:'+sealY+'">★</span>':(k>0&&!open?'<span class="wax" style="top:'+sealY+'"></span><span class="num" style="top:'+sealY+'">'+ROMAN[k]+'</span>':'');
+        var lab=c.title+(open?(c.act==='list'&&state.seen?' ✓':''):(isNext?'<small>'+c.when+'</small>':''));
+        html+='<button class="'+cls+'" data-i="'+k+'" style="left:'+x+'%;top:calc('+y+'% - 1.2cqw);--r:'+((k%2?1:-1)*(1.5+Math.random()*1.5))+'deg;--d:'+(-Math.random()*4)+'s"><span class="ei"><img src="'+img+'" alt="">'+mark+'</span><span class="lab">'+lab+'</span></button>';
+        k++;
+      }
+    });
+    svg.innerHTML=sv;envs.innerHTML=html;
+    envs.querySelectorAll('.env').forEach(function(b){b.onclick=function(){var c=CH[+b.dataset.i];
+      if(c.open){if(c.act==='list')openList();else if(c.url)location.href=c.url;return}
+      var t=$('#atip');t.textContent=c.title+' — '+(c.finale?c.when:'откроется '+c.when);t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(function(){t.classList.remove('on')},2200)}});
+  }
   function swap(from,to){var a=$(from),b=$(to);a.classList.add('off');b.classList.remove('hidden');
     requestAnimationFrame(function(){b.classList.remove('off')});setTimeout(function(){a.classList.add('hidden')},900)}
 
@@ -247,22 +315,18 @@ body{background:radial-gradient(ellipse at 50% 100%,#3A1A0C 0%,#1A0F14 45%,var(-
     setTimeout(finish,9000); // страховка, если видео зависло
   });
 
-  function showToc(){
-    $('#sheet').classList.add('in');
-    var t=burn($('.toc .h'),900),f=[].slice.call(document.querySelectorAll('#s-toc .fade'));
-    f.forEach(function(el,i){setTimeout(function(){el.classList.add('on')},t+300+i*450)});
-    var t2=burn($('.hand-toc'),t+300+f.length*450+400);
-    setTimeout(function(){$('#go').classList.add('pulse')},t2+300);
+  function showToc(instant){
+    renderChapters();
+    var e=[].slice.call(document.querySelectorAll('#envs .env'));
+    e.forEach(function(el,i){if(instant)el.classList.add('in');else setTimeout(function(){el.classList.add('in')},300+i*140)});
   }
+  function pulseNext(){}
 
-  // 2 → 3: лист переворачивается
-  $('#go').addEventListener('click',function(){
-    $('#sheet').classList.add('turn');
-    setTimeout(function(){
-      $('#s-toc').classList.add('hidden');var l=$('#s-list');l.classList.remove('hidden');window.scrollTo(0,0);
-      state.seen=true;save();writeNote();
-    },1000);
-  });
+  // конверт «Записка» → список инвентаря
+  function openList(){
+    $('#s-toc').classList.add('hidden');var l=$('#s-list');l.classList.remove('hidden');window.scrollTo(0,0);
+    var first=!state.seen;state.seen=true;save();writeNote(!first);
+  }
 
   var note=$('#note'),words=note.textContent.split(' ');
   note.innerHTML=words.map(function(w){return '<span class="w">'+w+'</span>'}).join(' ');
@@ -353,9 +417,9 @@ body{background:radial-gradient(ellipse at 50% 100%,#3A1A0C 0%,#1A0F14 45%,var(-
   });
 
   $('#again').addEventListener('click',function(){state.seen=false;save();location.href=location.pathname});
+  $('#totoc').addEventListener('click',function(){$('#s-list').classList.add('hidden');var t=$('#s-toc');t.classList.remove('hidden','off');window.scrollTo(0,0);showToc(true)});
   // вернулась — сразу к своему списку
   if(state.seen&&state.tier){
-    $('#s-book').classList.add('hidden');$('#s-list').classList.remove('hidden');
     writeNote(true);$('#st-tier').classList.add('show');markTier();renderKitchen();$('#st-kitchen').classList.add('show');
   }
   // предпросмотр для проверки: ?toc / ?list (+still — без анимаций)
