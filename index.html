@@ -332,8 +332,9 @@ body{background:radial-gradient(ellipse at 50% 100%,#3A1A0C 0%,#1A0F14 45%,var(-
       cx.font='600 30px Inter';cx.fillStyle='#8C6A50';cx.fillText('Клуб Планета X · Ленивая хозяйка 2.0',W/2,H-170);
       cv.toBlob(function(blob){
         var file=new File([blob],'spisok-k-dekabryu.png',{type:'image/png'});
-        if(navigator.canShare&&navigator.canShare({files:[file]})){navigator.share({files:[file],title:'Мой список к декабрю'}).catch(function(){})}
-        else{var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='spisok-k-dekabryu.png';document.body.appendChild(a);a.click();a.remove();toast('Картинка сохранена')}
+        var mobile=matchMedia('(pointer:coarse)').matches;
+        if(mobile&&navigator.canShare&&navigator.canShare({files:[file]})){navigator.share({files:[file],title:'Мой список к декабрю'}).catch(function(){})}
+        else{var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='spisok-k-dekabryu.png';document.body.appendChild(a);a.click();a.remove();toast('Картинка в папке «Загрузки»')}
       },'image/png');
     });
   });
