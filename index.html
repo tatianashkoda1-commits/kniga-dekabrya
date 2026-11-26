@@ -110,6 +110,7 @@ body{background:radial-gradient(ellipse at 50% 100%,#3A1A0C 0%,#1A0F14 45%,var(-
 .after.on{opacity:1}
 .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(30px);background:#F3EADF;color:#15121A;font-weight:700;border-radius:12px;padding:10px 16px;opacity:0;transition:.3s;pointer-events:none;font-size:14px;z-index:9}
 .toast.on{opacity:1;transform:translateX(-50%)}
+.again{display:block;margin:22px auto 0;background:none;border:1.5px solid rgba(246,217,168,.35);color:#F6D9A8;font:600 14px Inter,system-ui,sans-serif;border-radius:12px;padding:10px 16px;cursor:pointer}
 .club{text-align:center;font-size:12px;color:#8C7F8F;margin-top:26px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.c,.fade,.note .w,.after{opacity:1;filter:none}}
 </style>
@@ -180,6 +181,7 @@ body{background:radial-gradient(ellipse at 50% 100%,#3A1A0C 0%,#1A0F14 45%,var(-
       <p class="after" id="after">Что приготовят из этого списка — пока секрет.</p>
     </section>
   </div></div>
+  <button class="again" id="again">↻ Открыть книгу сначала</button>
   <p class="club">Клуб Планета X · Ленивая хозяйка 2.0</p>
 </section>
 <div class="toast" id="toast"></div>
@@ -339,6 +341,7 @@ body{background:radial-gradient(ellipse at 50% 100%,#3A1A0C 0%,#1A0F14 45%,var(-
     });
   });
 
+  $('#again').addEventListener('click',function(){state.seen=false;save();location.href=location.pathname});
   // вернулась — сразу к своему списку
   if(state.seen&&state.tier){
     $('#s-book').classList.add('hidden');$('#s-list').classList.remove('hidden');
