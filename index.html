@@ -28,6 +28,15 @@ body{background:radial-gradient(ellipse at 50% 100%,#3A1A0C 0%,#1A0F14 45%,var(-
 .bookbox.opened #cover{opacity:0}
 .bookbox.opened #open{opacity:1}
 .bookbox.dive #open{transform:scale(2.4);filter:brightness(2.4) blur(3px);opacity:0}
+.bookbox{container-type:inline-size}
+.brand{position:absolute;left:0;right:0;top:6.5%;text-align:center;pointer-events:none;z-index:2;transition:opacity 1s}
+.bookbox.dive .brand{opacity:0}
+.brand .k{font:700 2.9cqw Inter,system-ui,sans-serif;letter-spacing:.32em;text-transform:uppercase;color:#E9C98E;opacity:.85}
+.brand .n{font-family:"Cormorant Garamond",serif;font-weight:700;font-size:11.5cqw;line-height:1.05;margin:1.6cqw 0 0;
+  background:linear-gradient(180deg,#FFF1C9 0%,#E9B865 55%,#B9782E 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 2.4cqw rgba(255,150,60,.45)) drop-shadow(0 .4cqw .6cqw rgba(0,0,0,.6))}
+.brand .s{font-family:Caveat,cursive;font-weight:700;font-size:6.4cqw;color:#F6D9A8;margin-top:1cqw;text-shadow:0 0 2cqw rgba(255,130,50,.6)}
+.toc .kick{font:700 3cqw Inter,system-ui,sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#9A5A22;text-align:center;margin:0 0 1.4cqw}
 .tap{position:absolute;left:0;right:0;bottom:7%;text-align:center;font-family:Caveat,cursive;font-size:clamp(22px,6.5vw,30px);color:#F6D9A8;text-shadow:0 0 14px rgba(255,130,50,.8);animation:pulse 2.4s ease-in-out infinite;pointer-events:none}
 @keyframes pulse{50%{opacity:.4}}
 .bookbox button{position:absolute;inset:0;background:none;border:0;cursor:pointer}
@@ -39,7 +48,7 @@ body{background:radial-gradient(ellipse at 50% 100%,#3A1A0C 0%,#1A0F14 45%,var(-
 @keyframes sin{from{opacity:0;transform:scale(1.25)}to{opacity:1;transform:none}}
 .sheet.turn{transform:perspective(1400px) rotateY(-175deg);opacity:0}
 .sheet img{display:block;width:100%;height:100%}
-.toc{position:absolute;left:13%;right:13%;top:7%;color:var(--ink);font-family:"Cormorant Garamond",serif}
+.toc{position:absolute;left:13%;right:13%;top:5.5%;color:var(--ink);font-family:"Cormorant Garamond",serif}
 .toc .h{font-weight:700;font-size:10cqw;text-align:center;letter-spacing:.04em;margin:0;line-height:1.1}
 .orn{display:block;text-align:center;font-size:5cqw;color:#8A5A2B;margin:1cqw 0 3.5cqw}
 .row{display:flex;align-items:center;gap:2.4cqw;font-size:6.2cqw;margin:0 0 3.6cqw;line-height:1.15}
@@ -58,7 +67,7 @@ body{background:radial-gradient(ellipse at 50% 100%,#3A1A0C 0%,#1A0F14 45%,var(-
 .blur{filter:blur(1cqw);opacity:.7;white-space:nowrap;overflow:hidden}
 .sink{-webkit-mask-image:linear-gradient(to right,#000 30%,transparent 95%);mask-image:linear-gradient(to right,#000 30%,transparent 95%)}
 .sink.on{opacity:.55}
-.hand-toc{position:absolute;left:10%;right:38%;top:51%;font-family:Caveat,cursive;font-weight:700;font-size:5.8cqw;line-height:1.12;color:#6A2A10;transform:rotate(-4deg);margin:0}
+.hand-toc{position:absolute;left:10%;right:40%;top:53%;font-family:Caveat,cursive;font-weight:700;font-size:5.8cqw;line-height:1.12;color:#6A2A10;transform:rotate(-4deg);margin:0}
 
 /* выжигание */
 .c{opacity:0;display:inline-block}
@@ -124,6 +133,7 @@ body{background:radial-gradient(ellipse at 50% 100%,#3A1A0C 0%,#1A0F14 45%,var(-
     <img id="cover" src="oblozhka.jpg" alt="Старая книга с бронзовым шефом на обложке">
     <video id="vid" src="raskrytie.mp4" muted playsinline webkit-playsinline preload="auto"></video>
     <img id="open" src="raskrytie-final.jpg" alt="">
+    <div class="brand"><div class="k">Клуб Планета X</div><div class="n">Ленивая хозяйка 2.0</div><div class="s">тема декабря</div></div>
     <div class="tap" id="tap1">нажми, чтобы открыть</div>
     <button id="btn-open" aria-label="Открыть книгу"></button>
   </div>
@@ -134,6 +144,7 @@ body{background:radial-gradient(ellipse at 50% 100%,#3A1A0C 0%,#1A0F14 45%,var(-
   <div class="sheet" id="sheet">
     <img src="list-oglavlenie.webp" alt="">
     <div class="toc">
+      <p class="kick fade">Ленивая хозяйка 2.0</p>
       <p class="h"><span class="bw">Оглавление</span></p>
       <span class="orn fade">❦</span>
       <button class="row live fade" id="go"><span class="t">Записка.<br>Проверь свою кухню</span><span class="dots"></span><span class="arrow">➜</span></button>
@@ -325,7 +336,7 @@ body{background:radial-gradient(ellipse at 50% 100%,#3A1A0C 0%,#1A0F14 45%,var(-
       for(var r=0;r<3;r++)for(var c=0;c<3;c++)part(X[c],Y[r],X[c+1]-X[c],Y[r+1]-Y[r],DX[c],DY[r],DX[c+1]-DX[c],DY[r+1]-DY[r]);
       cx.fillStyle='#3A1E0E';cx.textAlign='center';
       cx.font='700 76px "Cormorant Garamond"';cx.fillText('Мой список к декабрю',W/2,250);
-      cx.font='700 44px Caveat';cx.fillStyle='#8A4A22';cx.fillText('из записки, что пахла костром',W/2,315);
+      cx.font='700 44px Caveat';cx.fillStyle='#8A4A22';cx.fillText('Ленивая хозяйка 2.0 · из записки, что пахла костром',W/2,315);
       cx.textAlign='left';cx.fillStyle='#3A1E0E';var y=430;
       if(!rows.length){cx.font='500 44px Inter';cx.fillText('Всё уже есть на кухне!',pad,y)}
       rows.forEach(function(r){cx.font='700 46px Inter';if(r.first){cx.strokeStyle='#9B7E66';cx.lineWidth=5;cx.strokeRect(pad,y-38,40,40)}cx.fillText(r.l,pad+70,y);y+=74});
