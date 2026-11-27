@@ -421,8 +421,10 @@ function vidScene(img){
   if(vidFor===img)return; // тот же кадр в следующей сцене — ролик уже отыгран и стоит на последнем кадре
   if(VID_START[img]&&curId!==VID_START[img]){v.classList.remove('on');v.pause();return} // ждём нужную реплику
   vidFor=img;v.classList.remove('on');v.src=VID[img];v.currentTime=0;v.loop=!!VID_LOOP[img];v.classList.toggle('top',img==='img/stol.webp');
-  var go2=function(){v.classList.add('on');var pr=v.play();if(pr&&pr.catch)pr.catch(function(){v.classList.remove('on')})};
-  if(v.readyState>=2)go2();else v.oncanplay=function(){v.oncanplay=null;go2()};
+  // телефон не грузит ролик заранее — запускаем сразу, показываем, когда реально пошёл
+  v.muted=true;v.setAttribute('muted','');v.playsInline=true;
+  v.onplaying=function(){if(vidFor===img)v.classList.add('on')};
+  var pr=v.play();if(pr&&pr.catch)pr.catch(function(){v.classList.remove('on')});
 }
 
 function setPH(){var h=document.getElementById('stage').clientHeight;var ph=Math.round(Math.min(250,Math.max(190,h*.27)));
