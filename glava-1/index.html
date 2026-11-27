@@ -379,7 +379,7 @@ var VOICED=["cross_ok_0", "chat_0", "chat_1", "fin2_0", "fin2_1", "fin_0", "home
 var AMB={'img/ofis.webp':'amb-office','img/doma.webp':'amb-night-kitchen','img/gorod.webp':'amb-street','img/zapiska.webp':'amb-street','img/ksyusha.webp':'amb-street','img/shef-1.webp':'amb-bistro','img/stol.webp':'amb-table','img/yaico.webp':'amb-table'};
 var SFX_AT={'o3_0':'sfx-applause','zap0_0':'sfx-note','s6_1':'sfx-ladle'};
 var SND={on:false,amb:null,ambKey:'',voice:null};
-function aud(n){var a=new Audio('audio/'+n+'.mp3');a.preload='auto';return a}
+function aud(n){var a=new Audio('audio/'+n+'.mp3?v=2');a.preload='auto';return a}
 function ambTo(key){
   if(!SND.on){if(SND.amb){SND.amb.pause();SND.amb=null;SND.ambKey=''}return}
   if(key===SND.ambKey)return;var old=SND.amb;SND.ambKey=key;SND.amb=null;
