@@ -76,19 +76,19 @@ a.row.live{text-decoration:none}
 .wires{position:absolute;inset:0;width:100%;height:100%;z-index:1;overflow:visible}
 .bulb{animation:bl 2.4s ease-in-out infinite}
 @keyframes bl{0%,100%{opacity:.55}50%{opacity:1}}
-.env{position:absolute;transform:translate(-50%,0) rotate(var(--r,0deg));transform-origin:50% 0;width:24%;z-index:2;background:none;border:0;padding:0;cursor:pointer;opacity:0;transition:opacity .5s}
-.env.in{opacity:1;animation:sway 4.5s ease-in-out infinite;animation-delay:var(--d,0s)}
+.env{position:absolute;transform:translate(-50%,0);width:24%;z-index:2;background:none;border:0;padding:0;cursor:pointer;opacity:0;transition:opacity .5s}
+.env.in{opacity:1}
 @keyframes sway{0%,100%{transform:translate(-50%,0) rotate(var(--r,0deg))}50%{transform:translate(-50%,0) rotate(calc(var(--r,0deg) * -1))}}
 .env .ei{position:relative;display:block}
 .env img{width:100%;display:block;filter:drop-shadow(0 1.5cqw 1.6cqw rgba(0,0,0,.6))}
 .env.open img{filter:drop-shadow(0 0 3cqw rgba(255,190,90,.75)) drop-shadow(0 1.5cqw 1.6cqw rgba(0,0,0,.6))}
-.env .num{position:absolute;left:50%;transform:translate(-50%,-50%);font-family:'Cormorant Garamond',serif;font-weight:700;font-size:5.6cqw;line-height:1;color:#FFE08A;text-shadow:0 0 .6cqw rgba(0,0,0,.9),0 .2cqw .3cqw rgba(0,0,0,.9);pointer-events:none;z-index:2}
-.env .wax{position:absolute;left:50%;width:30%;aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle at 35% 30%,#C83A2E,#8E1C17 58%,#5A0E0B);box-shadow:0 .4cqw .9cqw rgba(0,0,0,.55),inset 0 0 0 .7cqw rgba(0,0,0,.18),0 0 0 .45cqw #7A1712;pointer-events:none;z-index:1}
+.env .num{position:absolute;left:50%;transform:translate(-50%,-50%);font-family:'Cormorant Garamond',serif;font-weight:700;font-size:3cqw;line-height:1;color:#FFE08A;text-shadow:0 0 .6cqw rgba(0,0,0,.9),0 .2cqw .3cqw rgba(0,0,0,.9);pointer-events:none;z-index:2}
+.env .wax{position:absolute;left:50%;width:17%;aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle at 35% 30%,#C83A2E,#8E1C17 58%,#5A0E0B);box-shadow:0 .4cqw .9cqw rgba(0,0,0,.55),inset 0 0 0 .7cqw rgba(0,0,0,.18),0 0 0 .45cqw #7A1712;pointer-events:none;z-index:1}
 .env .lab{display:block;margin-top:.6cqw;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:3.6cqw;line-height:1.1;color:#FFE6C4;text-shadow:0 1px 4px #000;text-align:center}
 .env.next .lab small{color:#FF9A5C}
 .env .lab small{display:block;font:600 2.6cqw Inter,sans-serif;color:#E9C98E}
 .env.finale .num{color:#3A2410;text-shadow:none}
-.env.finale .seal-gold{position:absolute;left:50%;width:30%;z-index:1;aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle at 35% 30%,#FFE9A8,#E2B04E 55%,#9C6B1E);box-shadow:0 .4cqw .8cqw rgba(0,0,0,.5);pointer-events:none}
+.env.finale .seal-gold{position:absolute;left:50%;width:17%;z-index:1;aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle at 35% 30%,#FFE9A8,#E2B04E 55%,#9C6B1E);box-shadow:0 .4cqw .8cqw rgba(0,0,0,.5);pointer-events:none}
 .atip{position:absolute;left:50%;bottom:4%;transform:translateX(-50%);background:rgba(20,12,8,.85);border:1px solid rgba(233,201,142,.4);color:#FFE6C4;font:600 3.4cqw Inter,sans-serif;border-radius:3cqw;padding:2cqw 4cqw;opacity:0;transition:opacity .3s;z-index:5;white-space:nowrap;pointer-events:none}
 .atip.on{opacity:1}
 .seal{flex:0 0 8cqw;height:8cqw;border-radius:50%;position:relative;background:radial-gradient(circle at 35% 30%,#D2473A,#8E1C17 60%,#5E0F0C);box-shadow:0 .5cqw 1cqw rgba(0,0,0,.4),inset 0 0 0 .9cqw rgba(0,0,0,.16)}
@@ -267,7 +267,7 @@ a.row.live{text-decoration:none}
     {title:'Финал',when:'когда откроются все восемь',finale:true}
   ];
   // ряды гирлянды: y — высота крепления (в % от высоты), sag — провис
-  var ROWS=[{y:23,sag:5,n:3},{y:42,sag:5,n:3},{y:61,sag:5,n:3},{y:79,sag:3,n:1}];
+  var ROWS=[{y:24,sag:0,n:3},{y:43,sag:0,n:3},{y:62,sag:0,n:3},{y:80,sag:0,n:1}];
   var ROMAN=['','I','II','III','IV','V','VI','VII','VIII'];
   function renderChapters(){
     var adv=$('#adv');if(!adv)return;
@@ -281,11 +281,11 @@ a.row.live{text-decoration:none}
         sv+='<circle class="bulb" cx="'+x+'" cy="'+(y+.7)+'" r=".9" fill="'+['#FFD27A','#FF9A5C','#FFF1C9'][b%3]+'" style="animation-delay:'+(b*0.2)+'s;filter:drop-shadow(0 0 1.2px #FFB45A)"/>'}
       for(var e=0;e<r.n;e++){
         var c=CH[k];if(!c)break;
-        var t=r.n===1?.5:(e+1)/(r.n+1),x=x0+(x1-x0)*t,y=(1-t)*(1-t)*r.y+2*(1-t)*t*(r.y+r.sag*2)+t*t*r.y;
+        var t=r.n===1?.5:[.165,.5,.835][e],x=x0+(x1-x0)*t,y=(1-t)*(1-t)*r.y+2*(1-t)*t*(r.y+r.sag*2)+t*t*r.y;
         var open=!!c.open,img=open?'advent-otkryt.webp':'advent-zakryt.webp';
         var cls='env'+(open?' open':'')+(c.finale?' finale':'');
         var isNext=!open&&!c.finale&&!html.match(/ next/);if(isNext)cls+=' next';
-        var sealY=open?'78%':'64%';
+        var sealY=open?'78%':'67.5%';
         var mark=c.finale?'<span class="seal-gold" style="top:'+sealY+'"></span><span class="num" style="top:'+sealY+'">★</span>':(k>0&&!open?'<span class="wax" style="top:'+sealY+'"></span><span class="num" style="top:'+sealY+'">'+ROMAN[k]+'</span>':'');
         var lab=c.title+(open?(c.act==='list'&&state.seen?' ✓':''):(isNext?'<small>'+c.when+'</small>':''));
         html+='<button class="'+cls+'" data-i="'+k+'" style="left:'+x+'%;top:calc('+y+'% - 1.2cqw);--r:'+((k%2?1:-1)*(1.5+Math.random()*1.5))+'deg;--d:'+(-Math.random()*4)+'s"><span class="ei"><img src="'+img+'" alt="">'+mark+'</span><span class="lab">'+lab+'</span></button>';
