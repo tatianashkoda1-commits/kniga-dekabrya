@@ -1,0 +1,746 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ленивая хозяйка 2.0 — Пролог</title>
+<meta name="description" content="Новый год у тебя. Всем отделом!">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Caveat:wght@600;700&family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--night:#0E0B12;--ember:#E85D3A;--glow:#FF8A4C;--gold:#E9C98E;--paper:#F3E6CC;--ink:#3A1E0E}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--night);color:#F6EEE4;font:16px/1.5 Inter,system-ui,sans-serif;overflow:hidden}
+.stage{position:relative;height:100%;max-width:520px;margin:0 auto;overflow:hidden;background:#000}
+.bg{position:absolute;left:0;right:0;top:0;bottom:calc(var(--ph,200px) - 40px);background-size:cover;background-position:center 30%;transition:opacity .8s,filter .6s;opacity:0}
+.bg.top{bottom:0}
+.bg:not(.top){background-size:contain;background-repeat:no-repeat;background-position:center bottom}
+#vid{position:absolute;left:0;right:0;top:0;bottom:calc(var(--ph,200px) - 40px);width:100%;height:calc(100% - var(--ph,200px) + 40px);object-fit:contain;object-position:center bottom;opacity:0;transition:opacity .5s;pointer-events:none}
+#vid.on{opacity:1}
+#vid.top{bottom:auto;height:auto;object-fit:fill;object-position:center top}
+.stage.cardmode #vid{filter:blur(7px) brightness(.5)}
+.bgblur{position:absolute;left:0;right:0;top:0;bottom:calc(var(--ph,200px) - 40px);background-size:cover;background-position:center;filter:blur(22px) brightness(.55);transform:scale(1.15);transition:background-image .8s}
+.stage.cardmode .bg{filter:blur(7px) brightness(.5);bottom:0}
+.bg.on{opacity:1}
+.bg.contain{background-size:contain;background-repeat:no-repeat;background-position:center 12%;background-color:#1a1218}
+.bg.top{background-size:100% auto;background-repeat:no-repeat;background-position:center top;background-color:#140e10}
+.shade{position:absolute;left:0;right:0;bottom:0;height:calc(var(--ph,200px) + 70px);background:linear-gradient(to top,rgba(10,7,12,.96) 38%,rgba(10,7,12,.7) 65%,transparent);pointer-events:none}
+.panel{position:absolute;left:0;right:0;bottom:0;padding:18px 18px calc(22px + env(safe-area-inset-bottom));z-index:3}
+.who{display:inline-block;font:800 12px Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--night);background:var(--gold);border-radius:999px;padding:3px 10px;margin-bottom:8px}
+.who.hero{background:#E8833A;color:#fff}
+.who.boss{background:#BFE3F2;color:#173B4F;box-shadow:0 0 10px rgba(191,227,242,.45)}
+.who.chef{background:#2F5D46;color:#F4EFD8;border:1px solid #6E9B7F}
+.who.coll{background:#F2B8C6;color:#5A1E2E}
+.txt{font-size:17.5px;line-height:1.5;min-height:3em;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.txt em{color:var(--gold);font-style:normal}
+.back{position:absolute;right:14px;top:-34px;background:rgba(14,11,18,.6);border:1px solid rgba(233,201,142,.35);color:#E9DCCD;border-radius:999px;padding:5px 12px;font:600 13px Inter,sans-serif;cursor:pointer;z-index:4}
+.tap{margin-top:10px;font-size:12.5px;color:#BFAFA3;text-align:right;animation:pulse 2s infinite}
+@keyframes pulse{50%{opacity:.35}}
+.choices{display:grid;gap:9px;margin-top:12px}
+.btn{display:block;width:100%;text-align:left;border:1.5px solid rgba(233,201,142,.45);background:rgba(30,22,28,.82);color:#F6EEE4;border-radius:14px;padding:13px 15px;font:600 15.5px Inter,sans-serif;cursor:pointer}
+.btn:active{transform:scale(.99)}
+.btn.main{background:var(--ember);border-color:var(--ember);text-align:center;font-weight:800;box-shadow:0 8px 22px rgba(232,93,58,.35)}
+input.field{width:100%;border:1.5px solid rgba(233,201,142,.55);background:rgba(20,14,18,.9);color:#fff;border-radius:14px;padding:14px 15px;font:600 17px Inter,sans-serif;margin-top:12px;outline:none}
+input.field:focus{border-color:var(--glow)}
+.click{position:absolute;inset:0;z-index:2;cursor:pointer}
+
+/* выжженное */
+.burn{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;text-align:center;background:radial-gradient(ellipse at 50% 60%,#2A140C,#0A0608 70%);z-index:4}
+.burn p{font-family:Caveat,cursive;font-weight:700;font-size:clamp(30px,9vw,42px);line-height:1.15;color:#FF9A5C;margin:0 0 12px;text-shadow:0 0 12px rgba(255,120,50,.9),0 0 30px rgba(232,93,58,.6)}
+.c{opacity:0;display:inline-block}
+.c.on{animation:burnin .8s ease forwards}
+@keyframes burnin{0%{opacity:0;color:#fff;filter:blur(4px)}40%{opacity:1;color:#FFE0B0}100%{opacity:1;filter:none}}
+.pre{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:clamp(18px,5.5vw,24px);letter-spacing:.06em;color:#CDB89A;margin:0 0 26px;opacity:0;transition:opacity 1.4s}
+.pre.on{opacity:.85}
+.slam{animation:slam .6s ease forwards}
+@keyframes slam{0%{transform:scale(1)}30%{transform:scale(1.04)}100%{transform:scale(.2);opacity:0}}
+
+/* карточки-экраны */
+.card{position:absolute;left:16px;right:16px;top:9%;z-index:2;border-radius:22px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.6);animation:rise .5s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.chat{background:#E9E4DD;color:#222;padding:0 0 12px}
+.chat .top{background:#5B7FA6;color:#fff;padding:12px 16px;font-weight:700;font-size:15px}
+.chat .top small{display:block;font-weight:500;opacity:.8;font-size:12px}
+.msg{margin:10px 12px 0;max-width:82%;background:#fff;border-radius:14px 14px 14px 4px;padding:9px 12px;font-size:15px;box-shadow:0 1px 1px rgba(0,0,0,.08)}
+.msg b{display:block;font-size:12.5px;color:#C0546A}
+.msg .pic{margin-top:6px;height:110px;border-radius:10px;background:linear-gradient(135deg,#F7D9A8,#E9A86A);display:flex;align-items:center;justify-content:center;font-size:44px}
+.msg small{display:block;text-align:right;color:#999;font-size:11px}
+.shop{background:#fff;color:#222;padding:16px}
+.shop .logo{font-weight:800;color:#E85D3A;font-size:14px;letter-spacing:.06em}
+.shop h3{margin:10px 0 4px;font-size:19px}
+.shop .img{height:150px;border-radius:14px;background:radial-gradient(circle at 30% 40%,#F2C77E 0 18%,transparent 19%),radial-gradient(circle at 65% 55%,#D9763E 0 16%,transparent 17%),radial-gradient(circle at 45% 70%,#8FB36A 0 14%,transparent 15%),linear-gradient(135deg,#3B2A22,#1F1612);margin:10px 0}
+.shop .price{font-size:30px;font-weight:800;color:#C83A1E}
+.shop .sub{color:#777;font-size:13px}
+.search{background:#fff;color:#222;padding:14px}
+.search .bar{border:1.5px solid #ddd;border-radius:999px;padding:9px 14px;font-size:14px;color:#444}
+.res{display:flex;gap:10px;align-items:center;border-bottom:1px solid #eee;padding:10px 2px}
+.res .ic{flex:0 0 48px;height:48px;border-radius:10px;background:#EDEFF2;display:flex;align-items:center;justify-content:center;font-size:24px}
+.res b{display:block;font-size:14.5px}
+.res span{color:#C83A1E;font-weight:800;font-size:15px}
+.note{background:var(--paper);color:var(--ink);padding:22px 20px;border-radius:6px;transform:rotate(-1.5deg);
+  box-shadow:inset 0 0 22px 6px rgba(80,40,15,.45),0 20px 50px rgba(0,0,0,.6)}
+.note p{font-family:Caveat,cursive;font-weight:700;font-size:27px;line-height:1.2;margin:0}
+.note small{display:block;font-style:italic;color:#6B4A33;margin-top:10px;font-size:14px}
+.note .verso{margin-top:14px;font-family:Caveat,cursive;font-size:22px;color:#8A3A1A}
+
+/* стол */
+.table{position:absolute;left:0;right:0;top:0;aspect-ratio:768/1376}
+.lensbox{position:absolute;left:0;right:0;top:0;aspect-ratio:768/1344;pointer-events:none}
+.lenstxt{position:absolute;left:44.3%;top:35%;transform:translate(-50%,-50%) rotate(-9deg);font-family:Caveat,cursive;font-weight:700;font-size:clamp(18px,6.2vw,32px);color:#2F4A1C;white-space:nowrap;opacity:.12;filter:blur(3px);transition:opacity 1.6s,filter 1.6s;text-shadow:0 0 1px rgba(255,255,230,.4)}
+.lenstxt.on{opacity:.88;filter:blur(0)}
+.place{position:absolute;transform:translate(-50%,-50%);cursor:default}
+.place img{width:100%;display:block;filter:drop-shadow(0 3px 4px rgba(0,0,0,.35))}
+.place .q{position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);font:700 clamp(14px,4.4vw,22px) "Cormorant Garamond",serif;color:#B48A55;opacity:.9}
+.place.cur .q{color:var(--ember);animation:pulse 1.6s infinite}
+.place .g{position:absolute;left:50%;top:100%;transform:translateX(-50%);white-space:nowrap;font:700 11px Inter,sans-serif;background:rgba(14,11,18,.85);color:var(--gold);border-radius:8px;padding:2px 7px}
+.counter{position:absolute;left:12px;right:84px;white-space:nowrap;font-size:12px!important;top:calc(env(safe-area-inset-top) + 10px);text-align:left;z-index:3;font:700 13px Inter,sans-serif;color:#fff;text-shadow:0 1px 4px #000}
+.counter b{color:var(--gold)}
+
+.game{position:absolute;inset:0;overflow-y:auto;padding:calc(env(safe-area-inset-top) + 44px) 16px 24px;z-index:4}
+.gt{background:rgba(14,11,18,.82);border:1px solid rgba(233,201,142,.3);border-radius:16px;padding:12px 14px;font-size:15px}
+.gt ol{margin:8px 0 6px;padding-left:20px}.gt li{margin:3px 0}.gt small{color:#BFAFA3}
+.gt .who{margin-bottom:6px}
+.cab{margin:12px 0 8px;background:linear-gradient(#6B4A33,#4A3222);border-radius:14px;padding:8px;display:grid;gap:8px}
+.crow{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;border-bottom:7px solid #3A2414;padding-bottom:6px}
+.crow:last-child{border-bottom:0;padding-bottom:0}
+.cell{height:66px;border-radius:10px;background:rgba(255,230,190,.08);border:1.5px dashed rgba(233,201,142,.25);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.cell .itm{width:100%;height:100%}
+.shelves{margin:12px 0 8px;background:linear-gradient(#6B4A33,#4A3222);border-radius:14px;padding:8px}
+.shelf{position:relative;min-height:66px;border-bottom:7px solid #3A2414;margin-bottom:8px;padding:4px 4px 4px 74px;cursor:pointer;border-radius:6px;background:rgba(255,230,190,.07)}
+.shelf:last-child{margin-bottom:0}
+.shelf i{position:absolute;left:8px;top:50%;transform:translateY(-50%);font-style:normal;font-size:12px;color:#E9C98E;font-weight:700}
+.slot,.tray{display:flex;flex-wrap:wrap;gap:6px}
+.tray{min-height:70px;padding:6px;border:1.5px dashed rgba(233,201,142,.4);border-radius:14px;margin-bottom:10px}
+.itm{display:flex;flex-direction:column;align-items:center;justify-content:center;width:70px;height:60px;border-radius:12px;border:2px solid transparent;background:#F6EEE4;color:#3A1E0E;font-size:26px;line-height:1;cursor:pointer;padding:2px}
+.itm span{font:600 10.5px Inter,sans-serif;margin-top:3px}
+.itm.lock{opacity:.85;box-shadow:inset 0 0 0 2px #6E9B7F}
+.itm.sel{border-color:var(--ember);box-shadow:0 0 0 3px rgba(232,93,58,.35);transform:scale(1.06)}
+.xw{margin:12px auto 6px;display:flex;flex-direction:column;gap:3px;width:max-content;max-width:100%}
+.xr{display:flex;gap:3px;align-items:center}
+.xr.bad{animation:xshake .4s}
+@keyframes xshake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.xn{width:min(16px,4vw);font:700 11px Inter,sans-serif;color:#BFAFA3;text-align:right;margin-right:2px}
+.xc,.xe{width:min(32px,8.2vw);height:min(32px,8.2vw);flex:none}
+.xc{border:1.5px solid rgba(233,201,142,.45);background:rgba(243,230,204,.94);color:#3A1E0E;border-radius:5px;text-align:center;font:800 min(18px,4.6vw) Inter,sans-serif;padding:0;text-transform:uppercase;caret-color:#E85D3A;outline:none}
+.xc:focus{border-color:#E85D3A;box-shadow:0 0 0 2px rgba(232,93,58,.4)}
+.xc.key{background:#F6D88E;border-color:#C9962E}
+.xr.ok .xc{background:#CFE6C0;border-color:#7FAF63}
+.xr.ok .xc.key{background:#FFD45E;border-color:#B8860B;box-shadow:0 0 10px rgba(255,200,80,.8)}
+.xq{background:rgba(14,11,18,.82);border:1px solid rgba(233,201,142,.3);border-radius:16px;padding:10px 14px 10px 32px;font-size:14px;margin:8px 0 10px}
+.xq li{margin:4px 0;color:#F3EADF}.xq li i{color:#BFAFA3;font-style:normal}
+.xq li.on{color:#FFD9A8}.xq li.ok{color:#9FCF86;text-decoration:line-through;text-decoration-color:rgba(159,207,134,.5)}
+.xans{font:700 34px "Cormorant Garamond",serif;letter-spacing:.12em;color:#FFD45E;text-shadow:0 0 14px rgba(255,190,80,.7);margin-bottom:4px}
+.place .star{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);font-size:clamp(28px,10vw,48px);line-height:1;color:#FFD45E;text-shadow:0 0 10px rgba(255,200,80,.95),0 0 3px #000;animation:pulse 1.8s infinite}
+.gmsg{margin-top:10px;text-align:center;font-size:15px;color:#FFE6C4;min-height:22px}
+.game .field{position:relative;height:50vh;margin:12px 0 10px;border-radius:16px;overflow:hidden;background:linear-gradient(#2A1E28,#3A2A22);touch-action:none;border:1px solid rgba(233,201,142,.3);padding:0}
+.hud{position:absolute;left:10px;right:10px;top:8px;display:flex;justify-content:space-between;font:800 16px Inter,sans-serif;color:#E9C98E;z-index:2}
+.basket{position:absolute;bottom:4%;left:50%;transform:translateX(-50%);font-size:46px}
+.drop{position:absolute;transform:translateX(-50%);font-size:32px;pointer-events:none}
+.pop{position:absolute;bottom:16%;transform:translateX(-50%);font:800 16px Inter,sans-serif;color:#FFE6C4;animation:popup .6s ease forwards;pointer-events:none}
+@keyframes popup{to{transform:translate(-50%,-40px);opacity:0}}
+.plist{background:var(--paper);color:var(--ink);border-radius:8px;padding:18px 18px 14px;box-shadow:inset 0 0 22px 6px rgba(80,40,15,.35),0 18px 40px rgba(0,0,0,.5);margin-bottom:12px}
+.plist .pk{font:800 11px Inter,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#9A5A22}
+.plist h3{font-family:'Cormorant Garamond',serif;font-size:26px;margin:2px 0 0}
+.plist .ps{font-family:Caveat,cursive;font-size:20px;color:#8A4A22;margin-bottom:6px}
+.plist ul{margin:0;padding-left:18px}.plist li{margin:5px 0;font-size:15px}
+.plist li small{display:block;color:#7A5A40;font-size:12.5px}
+.plist .pn{margin-top:10px;font-size:13px;color:#7A5A40}
+
+/* живые картинки: медленная камера, снег, мерцание, свет */
+.bg.on.kb{animation:kb 18s ease-in-out infinite alternate}
+@keyframes kb{from{transform:scale(1) translate(0,0)}to{transform:scale(1.07) translate(var(--kbx,0%),var(--kby,-1.2%))}}
+#fx{position:absolute;inset:0;pointer-events:none}
+#snow{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 1s}
+#snow.on{opacity:1}
+#glow{position:absolute;inset:0;opacity:0;transition:opacity 1s;mix-blend-mode:screen}
+#glow.on{opacity:1;animation:breathe 3.2s ease-in-out infinite}
+@keyframes breathe{0%,100%{filter:brightness(.85)}45%{filter:brightness(1.15)}60%{filter:brightness(.95)}}
+#twinkle{position:absolute;inset:0}
+#twinkle i{position:absolute;width:10px;height:10px;margin:-5px;border-radius:50%;background:radial-gradient(circle,#FFF3C8 0,rgba(255,210,120,.7) 35%,transparent 70%);opacity:0;animation:tw 2.6s ease-in-out infinite}
+@keyframes tw{0%,100%{opacity:0;transform:scale(.6)}50%{opacity:.9;transform:scale(1.2)}}
+.stage.cardmode #fx{opacity:.4}
+@media (prefers-reduced-motion:reduce){.bg.on.kb{animation:none}#snow{display:none}}
+.intro{position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;justify-content:center;padding:30px 26px;background:radial-gradient(ellipse at 50% 70%,#2A140C,#0A0608 72%);text-align:center}
+.intro .ik{font:700 11px Inter,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#CDB89A}
+.intro .it{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:40px;line-height:1.1;margin:10px 0 2px;background:linear-gradient(180deg,#FFF1C9,#E9B865 55%,#B9782E);-webkit-background-clip:text;background-clip:text;color:transparent}
+.intro .is{font-family:Caveat,cursive;font-size:24px;color:#F6D9A8;margin-bottom:30px}
+.intro .ih{margin-top:14px;font-size:13px;color:#9C8E84}
+.intro.off{display:none}
+.sndbtn{position:absolute;top:calc(env(safe-area-inset-top) + 8px);right:88px;z-index:5;background:rgba(0,0,0,.4);border:0;color:#ddd;border-radius:10px;padding:6px 9px;font:600 13px Inter,sans-serif;cursor:pointer}
+.nextbtn{position:absolute;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));width:54px;height:54px;border-radius:50%;border:0;cursor:pointer;
+  font-size:24px;color:#fff;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(circle at 35% 30%,#FF9A5C,#E85D3A 55%,#B5361A);
+  box-shadow:0 0 0 0 rgba(232,93,58,.6),0 6px 16px rgba(120,40,10,.5);animation:nudge2 1.4s ease-in-out infinite,ring2 1.9s ease-out infinite;z-index:4}
+.nextbtn:active{transform:scale(.94)}
+@keyframes nudge2{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
+@keyframes ring2{0%{box-shadow:0 0 0 0 rgba(232,93,58,.6),0 6px 16px rgba(120,40,10,.5)}80%,100%{box-shadow:0 0 0 16px rgba(232,93,58,0),0 6px 16px rgba(120,40,10,.5)}}
+.panel:has(.nextbtn) .txt{padding-right:62px}
+.panel:has(.nextbtn) a.btn{margin-right:64px}
+.rules{list-style:none;margin:6px 0 0;padding:0}
+.rules li{position:relative;padding-left:26px;margin:0 0 8px;font-size:15.5px}
+.rules li::before{content:"✦";position:absolute;left:0;color:var(--gold)}
+.riddle{font-family:Caveat,cursive;font-weight:700;font-size:23px;line-height:1.22;color:#FFE6C4;margin:6px 0 0}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#F3EADF;color:#15121A;font-weight:700;border-radius:12px;padding:10px 16px;font-size:14px;opacity:0;transition:.3s;z-index:9;pointer-events:none}
+.toast.on{opacity:1}
+.restart{position:absolute;top:calc(env(safe-area-inset-top) + 8px);right:10px;z-index:5;background:rgba(0,0,0,.4);border:0;color:#ddd;border-radius:10px;padding:6px 10px;font:600 12px Inter,sans-serif;cursor:pointer}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.c{opacity:1}}
+/* ноутбук/планшет горизонтально: картинка целиком слева, текст справа */
+@media (min-aspect-ratio:4/5) and (min-width:700px){
+ :root{--iw:calc(100vh*9/16)}
+ .stage{max-width:none;width:min(100vw,calc(var(--iw) + 460px))}
+ .bg,.bgblur,#vid,#fx{right:auto!important;width:var(--iw);bottom:0!important}
+ #vid{height:100%}
+ .stage:not(.cardmode) #layer{position:absolute;left:0;top:0;bottom:0;width:var(--iw)}
+ .stage.cardmode .bg,.stage.cardmode .bgblur{width:auto;right:0!important}
+ .shade{left:var(--iw);top:0;height:auto!important;background:linear-gradient(to right,rgba(10,7,12,.75),#0E0B12 60px)}
+ .panel{left:var(--iw);top:0;display:flex;flex-direction:column;justify-content:flex-start;padding:30vh 34px 120px;overflow-y:auto}
+ .panel .txt{font-size:19px}
+ .panel .who{align-self:flex-start}
+ .back{top:18px;right:auto;left:34px}
+ .nextbtn{position:fixed;right:max(34px,calc(50vw - (var(--iw) + 460px)/2 + 34px));bottom:40px}
+ .panel:has(.nextbtn) .txt{padding-right:0}
+ .click{right:auto;width:var(--iw)}
+ .card{right:auto;width:calc(var(--iw) - 32px)}
+ .stage:has(.game) .shade{display:none}
+ .panel:has(.nextbtn) a.btn{margin-right:0}
+}
+
+/* ===== ДОСЬЕ ===== */
+.dosbtn{position:absolute;top:calc(env(safe-area-inset-top) + 8px);right:136px;z-index:5;background:rgba(0,0,0,.4);border:0;color:#F3E2C4;border-radius:10px;padding:6px 10px;font:600 13px Inter,sans-serif;cursor:pointer}
+.dosbtn.new::after{content:'';position:absolute;top:-3px;right:-3px;width:10px;height:10px;border-radius:50%;background:#E85D3A;box-shadow:0 0 8px #E85D3A;animation:pulse 1.4s infinite}
+.dos{position:fixed;inset:0;z-index:8;background:rgba(10,7,12,.96);overflow-y:auto;-webkit-overflow-scrolling:touch;padding:calc(env(safe-area-inset-top) + 16px) 16px 40px}
+.dos[hidden]{display:none}
+.dos .dwrap{max-width:560px;margin:0 auto}
+.dos .dhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.dos .dtitle{font:700 30px "Cormorant Garamond",serif;color:#E9C98E}
+.dos .dclose{background:rgba(255,255,255,.08);border:1px solid rgba(233,201,142,.35);color:#F3EADF;border-radius:999px;padding:6px 14px;font:600 14px Inter,sans-serif;cursor:pointer}
+.dos .dsub{color:#BFAFA3;font-size:14px;margin-bottom:14px}
+.dcard{background:var(--paper);color:var(--ink);border-radius:6px;padding:16px 16px 14px;margin:0 0 16px;box-shadow:0 6px 20px rgba(0,0,0,.45);position:relative}
+.dcard:nth-child(odd){transform:rotate(-.6deg)}.dcard:nth-child(even){transform:rotate(.5deg)}
+.dcard::before{content:'';position:absolute;top:-7px;left:50%;width:54px;height:16px;transform:translateX(-50%) rotate(-2deg);background:rgba(233,201,142,.55)}
+.dcard h4{margin:0 0 8px;font:700 22px "Cormorant Garamond",serif;color:#5A2E14}
+.dcard ul{margin:0 0 10px;padding-left:18px;font-size:14.5px;line-height:1.45}
+.dcard li{margin:2px 0}
+.dcard .dq{font-weight:700;font-size:14.5px;color:#8A3A1E;margin:6px 0 4px}
+.dcard textarea{width:100%;box-sizing:border-box;min-height:58px;border:0;border-bottom:1.5px dashed rgba(90,46,20,.35);background:repeating-linear-gradient(transparent 0 27px,rgba(90,46,20,.18) 27px 28px);font:600 21px/28px Caveat,cursive;color:#1F3A6B;resize:vertical;outline:none;padding:0 2px}
+.dcard textarea::placeholder{color:rgba(31,58,107,.4)}
+.dcard .dok{display:inline-block;background:#CFE6C0;color:#2F5A1C;border-radius:999px;padding:2px 10px;font-weight:700;font-size:13px}
+.dcard.lock{background:rgba(243,230,204,.12);color:#BFAFA3;box-shadow:none;border:1.5px dashed rgba(233,201,142,.3)}
+.dcard.lock::before{display:none}
+.dcard.lock h4{color:#9C8B7E;margin:0}
+.dcard.lock small{font-size:13px}
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <div class="bgblur" id="bgBlur"></div><div class="bg" id="bgA"></div><div class="bg" id="bgB"></div><video id="vid" muted playsinline webkit-playsinline preload="auto"></video>
+  <div id="fx"><canvas id="snow"></canvas><div id="glow"></div><div id="twinkle"></div></div><div id="layer"></div>
+  <div class="shade" id="shade"></div>
+  <div class="click" id="click"></div>
+  <div class="panel" id="panel"></div>
+  <button class="restart" id="restart" hidden>↻ сначала</button><button class="sndbtn" id="sndbtn" hidden>🔊</button><button class="dosbtn" id="dosbtn" hidden>📁 Досье</button><div class="dos" id="dos" hidden></div><div class="intro" id="intro"><div class="ik">Ленивая хозяйка 2.0 · Клуб Планета X</div><div class="it">Книга декабря</div><div class="is">Глава первая</div><button class="btn main" id="sndOn">🔊 Со звуком</button><button class="btn" id="sndOff" style="margin-top:10px;text-align:center">🔇 Без звука</button><div class="ih">Звук можно включить или выключить в любой момент — кнопка в углу.</div></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ======================= 1. СОСТОЯНИЕ ======================= */
+var KEY='lh2-kvest-v1';
+var S={name:'',scene:'start',guess:{},done:false};
+if(/[?&]reset/.test(location.search)){try{localStorage.removeItem(KEY)}catch(e){}history.replaceState(null,'',location.pathname)}
+try{var s=JSON.parse(localStorage.getItem(KEY)||'null');if(s&&typeof s==='object')Object.assign(S,s)}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function bookSeen(){try{var b=JSON.parse(localStorage.getItem('lh2-kniga-v1')||'null');return !!(b&&b.seen&&b.tier)}catch(e){return false}}
+var BOOK=(location.protocol==='file:')?'https://tatianashkoda1-commits.github.io/kniga-dekabrya/':'../';
+
+/* ======================= 2. СЦЕНАРИЙ =======================
+   img — фон; who — кто говорит (без who — мысль/рассказ); text — реплики по нажатию;
+   card — html-экран поверх; choices — выбор; input — поле; table — главный экран стола. */
+var N=function(){return S.name||'напарница'};
+var K='Ксюша';
+var STORY={
+ start:{pre:'В предыдущей серии…',burn:['Раз вы такие умные —','вот вам задачка.','Спасите её. Если успеете.'],next:'name'},
+
+ name:{img:'img/ksyusha.webp',who:K,text:['Ой! Ты меня видишь? Значит, ты тоже провалилась в эту книгу…','Я Ксюша. Ты же из Иксят? Тогда держись рядом!'],next:'name2'},
+ name2:{img:'img/ksyusha.webp',who:K,text:['Чувствую, начинается что-то странное… Смотри, что случилось сегодня вечером.'],next:'o1'},
+
+ o1:{img:'img/ofis.webp',text:['Последний рабочий день перед декабрём. 17:58. Все уже в куртках.','Начальница поднимает кружку с чаем. Странно — чай не дымится. По краю кружки иней.'],next:'o2'},
+ o2:{img:'img/ofis.webp',who:'Начальница',text:['Коллеги! Решено. Новый год празднуем у Ксюши. Всем отделом!'],next:'o3'},
+ o3:{img:'img/ofis.webp',text:['Отдел аплодирует. Улыбка застывает у Ксюши на лице.'],next:'o4'},
+ o4:{img:'img/ofis.webp',who:K,text:['У меня?.. Всем?.. Это сколько?'],next:'o5'},
+ o5:{img:'img/ofis.webp',who:'Начальница',text:['Двенадцать. Ну, с Бароном тринадцать.'],next:'o6'},
+ o6:{img:'img/ofis.webp',who:K,text:['Барон?'],next:'o7'},
+ o7:{img:'img/ofis.webp',who:'Начальница',text:['Мой шпиц. Он с нами везде.'],next:'chat'},
+
+ chat:{img:'img/ofis.webp',dim:true,card:function(){return '<div class="card chat"><div class="top">Отдел 🎄<small>18:04 · 13 участников</small></div>'+
+   '<div class="msg"><b>Коллега</b>Девочки, я принесу свой фирменный салат 😘 Рецепт мой, никому не дам!<div class="pic">🥗</div><small>18:04</small></div></div>'},
+   who:K,text:['Ты видела?! Это же МОЙ салат. Мой рецепт, слово в слово! Я хвасталась им в прошлом году.','И у неё всегда ледяные руки. Все шутят, а мне не смешно.'],next:'shop0'},
+
+ shop0:{img:'img/doma.webp',who:K,text:['Так. Спокойно. Фигня вопрос — закажу всё в ресторане!'],next:'shop'},
+ shop:{img:'img/doma.webp',dim:true,card:function(){return '<div class="card shop"><div class="logo">ДОСТАВКА · РЕСТОРАН</div><div class="img"></div><h3>Новогодний сет на 12 персон</h3><div class="sub">закуски, горячее, десерт · доставка 31.12</div><div class="price">186 000 ₽</div></div>'},
+   who:K,text:['Сколько?!'],next:'home'},
+
+ home:{img:'img/doma.webp',who:K,text:['Ночь. Холодильник пустой, голова тоже. Что мне делать?!'],choices:[
+   {text:'Загляни ещё раз в холодильник',reply:['Горчица, полбанки огурцов и лимон, который помнит лето. Он даже грустный.']},
+   {text:'Позвони маме',reply:['«Доча, главное — не опозорься». Гудки. Спасибо, мама.']},
+   {text:'Ляг на пол и притворись, что тебя нет',reply:['Пол холодный. Двенадцать гостей и Барон никуда не делись.']}],next:'search'},
+
+ search:{img:'img/doma.webp',dim:true,card:function(){return '<div class="card search"><div class="bar">🔍 праздничный стол как в ресторане</div>'+
+   '<div class="res"><div class="ic">🛁</div><div><b>Сувид-станция профессиональная</b><span>89 900 ₽</span></div></div>'+
+   '<div class="res"><div class="ic">❄️</div><div><b>Шкаф шоковой заморозки</b><span>214 000 ₽</span></div></div>'+
+   '<div class="res"><div class="ic">🔥</div><div><b>Пароконвектомат для ресторана</b><span>400 000 ₽</span></div></div></div>'},
+   who:K,text:['Ладно. Приготовлю сама. Как в ресторане…','У меня нет профоборудования! У меня плита, духовка и бабушкина сковородка!'],next:'gorod'},
+
+ gorod:{img:'img/gorod.webp',text:['Ксюша натягивает пуховик и выходит в ночь. Лупа по привычке в кармане.','Снег, гирлянды в витринах, все вокруг счастливые. Только она идёт и плачет.'],next:'zap0'},
+
+ zap0:{img:'img/zapiska.webp',focus:'center 92%',text:['К сапогу что-то прилипло. Листок с обугленными краями. А рядом в снегу — крашеное яйцо.'],next:'zap1'},
+ zap1:{img:'img/zapiska.webp',focus:'center 92%',who:K,text:['Яйцо? Откуда? Посвети-ка… Так, где моя лупа.'],next:'zap'},
+ zap:{img:'img/zapiska.webp',dim:true,card:function(){return '<div class="card note"><p>Плита есть? Духовка есть? Значит, справишься. Готовить будешь не ты — жар и время.</p><small>Подписи нет. Пахнет костром.</small><div class="verso">↘ на обороте — стрелка в переулок</div></div>'},
+   text:[function(){return bookSeen()?'Это та самая записка! Твой список уже собран ✓':'Похоже, это список того, что понадобится на кухне. Загляни, если ещё не видела.'}],
+   extra:function(){return bookSeen()?'':'<a class="btn" style="text-align:center;text-decoration:none;margin-top:10px" href="'+BOOK+'" target="_blank" rel="noopener">Проверить свою кухню ↗</a>'},next:'s1'},
+
+ s1:{img:'img/shef-1.webp',text:['В конце переулка — тёплое окно. Маленькое бистро без вывески.','На кухне самая обычная плита и духовка. На полках всё стоит ровными рядами, как на линейке. У плиты — шеф в белом кителе. Рядом ведро гладиолусов.'],next:'s2'},
+ s2:{img:'img/shef-1.webp',who:'Шеф',text:['Опаздываем! Проходим, не стоим в дверях. Обе.'],next:'s3'},
+ s3:{img:'img/shef-1.webp',who:K,text:['Я… мы просто…'],next:'s4'},
+ s4:{img:'img/shef-1.webp',who:'Шеф',text:['Тишина в классе.','Двадцать лет классного руководства. А такой растерянный вид, как у вас, вижу впервые. Что стряслось?'],next:'s5'},
+ s5:{img:'img/shef-1.webp',text:['Ксюша рассказывает всё: начальница, двенадцать гостей, Барон, 186 000 ₽.'],next:'s6'},
+ s6:{img:'img/shef-1.webp',who:'Шеф',text:['Профоборудование, говоришь?','<i>Он стучит половником по своей обычной духовке.</i>','Вот моё профоборудование. И я вас научу.'],next:'s7'},
+ s7:{img:'img/shef-1.webp',who:K,text:['Как вас зовут, шеф?'],next:'s8'},
+ s8:{img:'img/shef-1.webp',who:'Шеф',text:['Если присмотришься — догадаешься!','Хотя… это не обязательно.'],next:'t1'},
+
+ t1:{table:true,who:'Шеф',text:['Каждое блюдо на этом столе ты приготовишь сама. Твоих рук — минут пятнадцать, остальное сделают жар и время.','А как — подскажет тот, кто умеет. Я — первый. Остальных найдёте сами.'],next:'t2'},
+ t2:{table:true,who:K,text:['Сколько вас?'],next:'t3'},
+ t3:{table:true,who:'Шеф',text:['Сама увидишь.'],next:'rules'},
+ rules:{table:true,html:'<ul class="rules"><li>За пару дней до урока — задание: <b>добыть продукты</b>. Справились — получаете список покупок.</li><li>Хочешь больше? Есть секретная задачка: угадай блюдо раньше всех. Угадала — на тарелке загорится звёздочка.</li><li>В день урока блюдо встаёт на стол. Заполните все восемь тарелок — откроется то, что под клошами.</li></ul>',next:'hw'},
+
+ hw:{table:true,who:'Шеф',text:['Домашнее задание: добыть продукты к первому декабря. Списывать не разрешаю.'],next:'hw2'},
+ hw2:{table:true,who:K,text:['Выручай! Как будем добывать — выбирай ты.'],
+   choices:[{text:'🧠 Разложить по полкам — на смекалку',go:'g_shelf'},{text:'⚡ Поймать в корзину — на скорость',go:'g_catch'}]},
+ g_shelf:{game:'shelf',next:'list1'},
+   g_catch:{game:'catch',next:'list1'},
+  g_cross:{game:'cross',next:'cross_ok'},
+  cross_ok:{table:true,who:'Шеф',text:['Буланжер! Так и называется. Пять с плюсом — звёздочка на твоей тарелке.'],next:'secret'},
+ list1:{list:1,next:'secret'},
+
+ secret:{table:true,who:'Шеф',text:[function(){return S.stars&&S.stars.q1&&S.guess.g1?'Всё сдано. Отличницы!':'Пятёрка обеим. А для самых любопытных — задачки со звёздочкой. Необязательно, для азарта.'}],
+   choices:function(){var o=[];
+     if(!(S.stars&&S.stars.q1!==undefined))o.push({text:'⭐ Вопрос к доске — про кухню',go:'quiz1'});
+     if(!S.guess.g1)o.push({text:'⭐ Кроссворд Шефа — как называется блюдо?',go:'g_cross'});
+     o.push({text:o.length?'Пока хватит':'Дальше ▸',go:'fin'});return o}},
+ quiz1:{table:true,who:'Шеф',quiz:{key:'q1',q:'Вопрос к доске. Мясо достали из духовки. Почему его нельзя сразу резать?',
+   opts:['Оно слишком горячее — обожжёшься','Сок не успеет разойтись по куску и вытечет на доску','Остынет картошка'],right:1,
+   ok:'Верно! Пусть полежит минут десять под фольгой — и кусок будет сочным. Звёздочка твоя ⭐',
+   bad:'Садись, два… Шучу. Правильно так: сок не успеет разойтись по куску и вытечет на доску. Мясу надо полежать минут десять под фольгой.'},next:'secret'},
+ riddle:{table:true,who:'Шеф',html:'<p class="riddle">Построились рядами, ровно, как на линейке: кружок к кружку, плечом к плечу.<br>Сверху старший — самый важный и самый толстый.<br>Все вместе три часа сидят в жарком классе, и никто не сбежал.<br>Как называется блюдо?</p>',
+   input:{ph:'Твоя догадка',btn:'Сдать',key:'g1'},next:'secret'},
+
+ fin:{table:true,who:'Шеф',text:['Урок первого декабря. Не опаздывать!'],next:'fin2'},
+ fin2:{img:'img/yaico.webp',mode:'top',lens:true,who:K,text:['Смотри! На яйце что-то написано… Дай-ка лупу.','Совсем мелко: <em>«Ты справишься».</em> Кто же это пишет?..'],next:'end'},
+ end:{table:true,end:true,html:'<div style="font-family:Cormorant Garamond,serif;font-weight:700;font-size:26px;color:#E9C98E;text-align:center">Продолжение — 1 декабря</div><button class="btn" id="openlist" style="margin-top:10px;text-align:center">🧺 Мой список продуктов</button><button class="btn" id="savelink" style="margin-top:8px;text-align:center">🔗 Сохранить прогресс ссылкой</button><a class="btn" id="tobook" style="margin-top:8px;text-align:center;text-decoration:none;display:block" href="#">📖 К оглавлению книги</a><div style="text-align:center;color:#BFAFA3;font-size:14px;margin-top:4px">Ленивая хозяйка 2.0 · Клуб Планета X</div>'}
+};
+
+
+/* ======================= ЖИВЫЕ КАРТИНКИ ======================= */
+// kb — медленная камера (x,y — куда плывём), snow — снег (0..1), glow — пульсирующий свет, tw — зона мерцающих огоньков
+var FX={
+ 'img/ksyusha.webp':{kb:[0,-1.5],snow:.9,tw:[[0,8,100,40]]},
+ 'img/ofis.webp':{kb:[1.5,-1],snow:.25,tw:[[0,18,10,14],[92,18,8,14]]},
+ 'img/doma.webp':{kb:[-1,-1],glow:'radial-gradient(ellipse 45% 55% at 12% 45%,rgba(140,200,255,.35),transparent 70%)'},
+ 'img/gorod.webp':{kb:[0,-1.5],snow:1,tw:[[0,10,100,30],[78,20,22,40]]},
+ 'img/zapiska.webp':{kb:[0,1],snow:.8,tw:[[10,0,80,32]]},
+ 'img/shef-1.webp':{kb:[-1,-1],glow:'radial-gradient(ellipse 35% 25% at 34% 12%,rgba(255,200,120,.35),transparent 70%)'},
+ 'img/stol.webp':{snow:0,glow:'radial-gradient(ellipse 18% 22% at 50% 52%,rgba(255,190,100,.45),transparent 70%),radial-gradient(ellipse 30% 10% at 50% 36%,rgba(255,215,140,.25),transparent 70%)',tw:[[33,4,36,26]]}
+};
+var snowCv=null,snowCx=null,flakes=[],snowAmt=0,snowRAF=0;
+function snowInit(){snowCv=document.getElementById('snow');snowCx=snowCv.getContext('2d');function size(){var r=snowCv.getBoundingClientRect();snowCv.width=r.width*devicePixelRatio;snowCv.height=r.height*devicePixelRatio}size();addEventListener('resize',size);
+  (function loop(){var W=snowCv.width,H=snowCv.height,want=Math.round(110*snowAmt);
+    while(flakes.length<want)flakes.push({x:Math.random()*W,y:Math.random()*H,r:(Math.random()*1.8+.6)*devicePixelRatio,v:(Math.random()*.6+.35)*devicePixelRatio,s:Math.random()*6.28});
+    if(flakes.length>want)flakes.length=want;
+    snowCx.clearRect(0,0,W,H);snowCx.fillStyle='rgba(255,255,255,.85)';
+    flakes.forEach(function(f){f.y+=f.v;f.s+=.02;f.x+=Math.sin(f.s)*.4*devicePixelRatio;if(f.y>H){f.y=-5;f.x=Math.random()*W}snowCx.beginPath();snowCx.arc(f.x,f.y,f.r,0,6.28);snowCx.fill()});
+    snowRAF=requestAnimationFrame(loop)})();}
+function applyFx(src,isTable){
+  var f=FX[src]||{};
+  var on=document.querySelector('.bg.on');
+  if(src&&src===applyFx._last&&!isTable){/* та же картинка — камера продолжает движение */}
+  else{document.querySelectorAll('.bg').forEach(function(b){b.classList.remove('kb')});}
+  applyFx._last=src;
+  if(on&&f.kb&&!isTable&&!on.classList.contains('kb')){on.style.setProperty('--kbx',f.kb[0]+'%');on.style.setProperty('--kby',f.kb[1]+'%');void on.offsetWidth;on.classList.add('kb')}
+  snowAmt=f.snow||0;document.getElementById('snow').classList.toggle('on',snowAmt>0);
+  var g=document.getElementById('glow');g.style.background=f.glow||'none';g.classList.toggle('on',!!f.glow);
+  if(isTable){g.style.bottom='auto';g.style.height=(innerWidth>520?520:innerWidth)*1376/768+'px'}else{g.style.bottom='';g.style.height=''}
+  var tw=document.getElementById('twinkle');tw.innerHTML='';
+  (f.tw||[]).forEach(function(z){for(var i=0;i<7;i++){var e=document.createElement('i');e.style.left=(z[0]+Math.random()*z[2])+'%';e.style.top=(z[1]+Math.random()*z[3])+'%';e.style.animationDelay=(Math.random()*2.6)+'s';e.style.animationDuration=(2+Math.random()*1.6)+'s';tw.appendChild(e)}});
+  if(isTable){tw.style.height=g.style.height}else tw.style.height='';
+}
+
+
+/* ======================= ЗВУК ======================= */
+var VOICED=["cross_ok_0", "chat_0", "chat_1", "fin2_0", "fin2_1", "fin_0", "home_0", "hw2_0", "hw_0", "name2_0", "name_0", "name_1", "o2_0", "o4_0", "o5_0", "o6_0", "o7_0", "quiz1_bad", "quiz1_ok", "quiz1_q", "riddle_h", "s2_0", "s3_0", "s4_0", "s4_1", "s6_0", "s6_2", "s7_0", "s8_0", "s8_1", "search_0", "search_1", "secret_0", "secret_0b", "shop0_0", "shop_0", "t1_0", "t1_1", "t2_0", "t3_0", "zap1_0"];
+var AMB={'img/ofis.webp':'amb-office','img/doma.webp':'amb-night-kitchen','img/gorod.webp':'amb-street','img/zapiska.webp':'amb-street','img/ksyusha.webp':'amb-street','img/shef-1.webp':'amb-bistro','img/stol.webp':'amb-table','img/yaico.webp':'amb-table'};
+var SFX_AT={'o3_0':'sfx-applause','zap0_0':'sfx-note','s6_1':'sfx-ladle'};
+var SND={on:false,amb:null,ambKey:'',voice:null};
+function aud(n){var a=new Audio('audio/'+n+'.mp3');a.preload='auto';return a}
+function ambTo(key){
+  if(!SND.on){if(SND.amb){SND.amb.pause();SND.amb=null;SND.ambKey=''}return}
+  if(key===SND.ambKey)return;var old=SND.amb;SND.ambKey=key;SND.amb=null;
+  if(old){var v=old.volume,t=setInterval(function(){v-=.04;if(v<=0){clearInterval(t);old.pause()}else old.volume=v},40)}
+  if(!key)return;var a=aud(key);a.loop=true;a.volume=0;SND.amb=a;a.play().catch(function(){});
+  var v2=0,t2=setInterval(function(){v2+=.03;if(v2>=.32||SND.amb!==a){clearInterval(t2)}else a.volume=v2},50);
+}
+function sfx(n,vol){if(!SND.on)return;var a=aud(n);a.volume=vol||.7;a.play().catch(function(){})}
+function say(key){
+  if(SND.voice){SND.voice.pause();SND.voice=null}
+  if(!SND.on||VOICED.indexOf(key)<0)return;
+  var a=aud(key);a.volume=1;SND.voice=a;
+  if(SND.amb)SND.amb.volume=.14;
+  a.onended=function(){if(SND.amb&&SND.voice===a)SND.amb.volume=.32};
+  a.play().catch(function(){});
+}
+function soundForLine(){
+  if(!cur)return;
+  var key=curId+'_'+line;
+  if(curId==='secret'&&S.stars&&S.stars.q1&&S.guess.g1)key='secret_0b';
+  if(curId==='_q')key=(S.stars&&S.stars.q1)?'quiz1_ok':'quiz1_bad';
+  if(SFX_AT[key])sfx(SFX_AT[key]);
+  if(cur.quiz)key='quiz1_q';
+  if(cur.html&&/riddle/.test(cur.html))key=curId+'_h';
+  say(key);
+}
+function setSound(on){SND.on=on;S.sound=on;save();$('sndbtn').textContent=on?'🔊':'🔇';
+  if(!on){if(SND.voice)SND.voice.pause();ambTo('')}else{ambTo(cur?(cur.table?'amb-table':(AMB[cur.img]||'')):'')}}
+
+
+/* ======================= ОЖИВЛЁННЫЕ КАДРЫ ======================= */
+var VID={'img/ksyusha.webp':'video/ksyusha.mp4','img/zapiska.webp':'video/zapiska.mp4','img/shef-1.webp':'video/shef.mp4','img/stol.webp':'video/stol.mp4'};
+var VID_LOOP={'img/stol.webp':1};
+var VID_START={'img/shef-1.webp':'s2'};
+var vidFor='';
+function vidScene(img){
+  var v=document.getElementById('vid');
+  if(!VID[img]){v.classList.remove('on');v.pause();vidFor='';return}
+  if(vidFor===img)return; // тот же кадр в следующей сцене — ролик уже отыгран и стоит на последнем кадре
+  if(VID_START[img]&&curId!==VID_START[img]){v.classList.remove('on');v.pause();return} // ждём нужную реплику
+  vidFor=img;v.classList.remove('on');v.src=VID[img];v.currentTime=0;v.loop=!!VID_LOOP[img];v.classList.toggle('top',img==='img/stol.webp');
+  var go2=function(){v.classList.add('on');var pr=v.play();if(pr&&pr.catch)pr.catch(function(){v.classList.remove('on')})};
+  if(v.readyState>=2)go2();else v.oncanplay=function(){v.oncanplay=null;go2()};
+}
+
+function setPH(){var h=document.getElementById('stage').clientHeight;var ph=Math.round(Math.min(250,Math.max(190,h*.27)));
+  if(document.documentElement.style.getPropertyValue('--ph')!==ph+'px')document.documentElement.style.setProperty('--ph',ph+'px')}
+addEventListener('resize',setPH);
+
+/* ======================= 3. ДВИЖОК ======================= */
+var $=function(id){return document.getElementById(id)};
+var LAND=matchMedia('(min-aspect-ratio:4/5) and (min-width:700px)');
+var panel=$('panel'),layer=$('layer'),click=$('click'),shade=$('shade');
+var cur=null,curId=null,line=0,flip=false,lastImg='',hist=[];
+var ROLE={'Ксюша':'hero','Начальница':'boss','Шеф':'chef','Коллега':'coll'};
+function val(v){return typeof v==='function'?v():v}
+function toast(t){var x=$('toast');x.textContent=t;x.classList.add('on');setTimeout(function(){x.classList.remove('on')},1800)}
+function setBg(src,mode,focus){
+  var bb=document.getElementById('bgBlur');if(bb)bb.style.backgroundImage=(src&&mode!=='top')?'url('+src+')':'none';
+  var a0=flip?$('bgB'):$('bgA');if(src===lastImg){a0.style.backgroundPosition=focus||'';return}lastImg=src;
+  var a=flip?$('bgA'):$('bgB'),b=flip?$('bgB'):$('bgA');flip=!flip;
+  a.style.backgroundImage=src?'url('+src+')':'none';a.classList.toggle('top',mode==='top');a.style.backgroundPosition=focus||'';
+  a.classList.add('on');b.classList.remove('on');
+}
+var TABLE_ROWS=[492,591,711,856,1028,1210];
+function tableHTML(){
+  function edges(y){var f=(y-440)/(1335-440);return [235+(8-235)*f,560+(762-560)*f]}
+  var h='<div class="table">',n=0;
+  TABLE_ROWS.forEach(function(y,i){
+    var e=edges(y),w=e[1]-e[0];
+    [e[0]+w*.2,e[1]-w*.2].forEach(function(cx,side){
+      var cl=i<2,num=cl?0:(++n);
+      var size=w*(cl?.30:.25)/768*100;
+      var isCur=(num===1);
+      h+='<div class="place'+(isCur?' cur':'')+'" style="left:'+(cx/768*100)+'%;top:'+(y/1376*100)+'%;width:'+size+'%">'+
+        '<img src="img/'+(cl?'klosh':'tarelka')+'.webp" alt="">'+(cl||(isCur&&S.stars&&S.stars.g1)?'':'<span class="q">?</span>')+
+        (isCur&&S.guess.g1?'<span class="g">«'+esc(S.guess.g1).slice(0,22)+'»</span>':'')+(isCur&&S.stars&&S.stars.g1?'<span class="star">★</span>':'')+'</div>';
+    });
+  });
+  return h+'</div><div class="counter">Блюд: <b>0/8</b> · ⭐ <b>'+starCount()+'</b> · До НГ: <b>'+daysLeft()+'</b></div>';
+}
+function starCount(){var n=0;if(S.stars)for(var k in S.stars)if(S.stars[k]===true)n++;return n}
+function daysLeft(){var d=Math.ceil((new Date(2027,0,1)-new Date())/864e5);return Math.max(d,0)+' '+plural(d,'день','дня','дней')}
+function plural(n,a,b,c){n=Math.abs(n)%100;var m=n%10;return n>10&&n<20?c:m>1&&m<5?b:m===1?a:c}
+function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+
+function go(id,ln,fromBack){
+  if(!fromBack&&curId)hist.push({id:curId,line:line});
+  curId=id;cur=STORY[id];line=ln||0;S.scene=id;if(cur.end)S.done=true;S.seen=S.seen||{};S.seen[id]=1;dosUpdate();save();
+  $('restart').hidden=(id==='start');
+  layer.innerHTML='';
+  if(cur.burn){return burnScene(cur)}
+  if(cur.game){return GAMES[cur.game](cur)}
+  if(cur.list){return listScene(cur)}
+  if(cur.table){vidScene('img/stol.webp');setBg('img/stol.webp','top');layer.innerHTML=tableHTML();applyFx('img/stol.webp',true);ambTo('amb-table')}
+  else{setBg(cur.img,cur.mode||null,cur.focus);applyFx(cur.img,!!cur.lens);vidScene(cur.img);if(!cur.card||cur.img)ambTo(AMB[cur.img]||'')}
+  if(cur.lens)layer.innerHTML='<div class="lensbox"><div class="lenstxt" id="lensTxt">Ты справишься</div></div>';
+  $('stage').classList.toggle('cardmode',!!cur.card);shade.style.height=(cur.table&&(cur.html||cur.input))?'80%':'';
+  if(cur.card)layer.innerHTML+=val(cur.card);
+  render();
+}
+function render(){
+  var c=cur,h='';
+  if(curId==='fin2'&&line>=1&&!(S.seen&&S.seen.egg2)){S.seen.egg2=1;dosUpdate();save()}
+  var who=val(c.who);if(who){var cls=ROLE[who]||'hero';h+='<div class="who '+cls+'">'+esc(who)+'</div>'}
+  var lines=(c.text||[]).map(val);
+  if(c.html)h+='<div class="txt">'+c.html+'</div>';
+  if(lines.length)h+='<div class="txt">'+lines[line]+'</div>';
+  var last=line>=lines.length-1;
+  click.style.display='none';
+  if(lines.length&&!last){h+='<button class="nextbtn" id="nx" aria-label="Дальше">➜</button>';click.style.display='block'}
+  else if(c.choices&&!c._picked){var CH=val(c.choices);c._ch=CH;h+='<div class="choices">'+CH.map(function(ch,i){return '<button class="btn" data-i="'+i+'">'+ch.text+'</button>'}).join('')+'</div>'}
+  else if(c.quiz){h+='<div class="txt">'+c.quiz.q+'</div><div class="choices">'+c.quiz.opts.map(function(o,i){return '<button class="btn" data-q="'+i+'">'+o+'</button>'}).join('')+'</div>'}
+  else if(c.input){if(c.input.ask)h+='<div class="txt">'+c.input.ask+'</div>';h+='<input class="field" id="fld" maxlength="40" placeholder="'+c.input.ph+'" autocomplete="off"><div class="choices"><button class="btn main" id="ok">'+c.input.btn+'</button></div>'}
+  else if(c.end){h+='<div class="choices"><button class="btn" id="again">↻ Пройти пролог заново</button></div>'}
+  else{if(c.extra)h+=val(c.extra);h+='<button class="nextbtn" id="nx" aria-label="Дальше">➜</button>';click.style.display='block'}
+  if(hist.length)h+='<button class="back" id="bk">‹ назад</button>';
+  panel.innerHTML=h;
+  var lt=$('lensTxt');if(lt)lt.classList.toggle('on',line>=1);
+  if(!c.end)soundForLine();
+  var bk=$('bk');if(bk)bk.onclick=function(e){e.stopPropagation();back()};
+  var nx=$('nx');if(nx)nx.onclick=function(e){e.stopPropagation();click.onclick()};
+  setPH();
+  if(!LAND.matches){var ph0=parseInt(getComputedStyle(document.documentElement).getPropertyValue('--ph'))||200;var need=panel.offsetHeight+110;
+    shade.style.height=(cur.table&&(cur.html||cur.input))?'80%':(need>ph0+70?need+'px':'')}
+  panel.querySelectorAll('[data-i]').forEach(function(b){b.onclick=function(){var ch=(c._ch||c.choices)[+b.dataset.i];if(ch.go){go(ch.go);return}hist.push({id:curId,line:line,unpick:true});c._picked=true;c.text=(c.text||[]).concat(ch.reply);line++;render()}});
+  panel.querySelectorAll('[data-q]').forEach(function(b){b.onclick=function(){var q=c.quiz,r=(+b.dataset.q===q.right);S.stars=S.stars||{};S.stars[q.key]=r;save();var cc={table:true,who:'Шеф',text:[r?q.ok:q.bad],next:c.next};STORY['_q']=cc;go('_q')}});
+  var ok=$('ok');if(ok){var f=$('fld');if(c.input.key==='name'&&S.name)f.value=S.name;if(S.guess[c.input.key])f.value=S.guess[c.input.key];
+    setTimeout(function(){try{f.focus()}catch(e){}},300);
+    f.onkeydown=function(e){if(e.key==='Enter')ok.click()};
+    ok.onclick=function(){var v=f.value.trim();if(!v){toast(c.input.key==='name'?'Напиши имя':'Напиши хоть что-нибудь');return}
+      if(c.input.key==='name')S.name=v.charAt(0).toUpperCase()+v.slice(1);else{S.guess[c.input.key]=v;toast('Сдано! Ответ — 1 декабря')}
+      save();go(c.next)}}
+  var ag=$('again');if(ag)ag.onclick=restart;
+  var ol=$('openlist');if(ol)ol.onclick=function(){go('list1')};
+  var sl=$('savelink');if(sl)sl.onclick=saveLink;
+  var tb=$('tobook');if(tb)tb.href=BOOK;
+}
+click.onclick=function(){
+  var atLast=line>=(cur.text||[]).length-1;
+  if(cur.game||cur.list||(atLast&&(cur.quiz||cur.input||(cur.choices&&!cur._picked))))return;
+  var lines=(cur.text||[]);
+  if(line<lines.length-1){hist.push({id:curId,line:line});line++;render();return}
+  if(cur.next)go(cur.next);
+};
+function back(){
+  var h=hist.pop();if(!h)return;
+  if(h.unpick){var sc=STORY[h.id];sc._picked=false;sc.text=sc.text.slice(0,1)}
+  if(h.id===curId){line=h.line;render()}else{S.done=false;go(h.id,h.line,true)}
+}
+document.addEventListener('keydown',function(e){if(e.target.tagName==='INPUT')return;if(e.key==='ArrowLeft')back();if((e.key==='ArrowRight'||e.key===' ')&&click.style.display!=='none'){e.preventDefault();click.click()}});
+function burnScene(c){
+  vidScene('');setBg('');applyFx('',false);ambTo('');sfx('sfx-burn',.8);setTimeout(function(){sfx('hochpok',1)},(c.pre?1900:200));panel.innerHTML='';click.style.display='none';
+  var d=document.createElement('div');d.className='burn';
+  d.innerHTML=(c.pre?'<div class="pre" id="pre">'+c.pre+'</div>':'')+c.burn.map(function(l){return '<p>'+l.split(' ').map(function(w){return '<span style="white-space:nowrap">'+w.split('').map(function(ch){return '<span class="c">'+ch+'</span>'}).join('')+'</span>'}).join(' ')+'</p>'}).join('')+'<button class="nextbtn" id="btap" style="opacity:0;transition:opacity .6s" aria-label="Дальше">➜</button>';
+  layer.appendChild(d);
+  var cs=[].slice.call(d.querySelectorAll('.c')),t=c.pre?2200:300;
+  if(c.pre)setTimeout(function(){var e=$('pre');if(e)e.classList.add('on')},200);
+  var _tm=[];cs.forEach(function(ch,i){t+=55+Math.random()*60;if(ch.textContent==='—'||ch.textContent==='.')t+=300;_tm.push(setTimeout(function(){ch.classList.add('on')},t))});
+  var ready=false,timers=_tm;
+  function finish(){timers.forEach(clearTimeout);cs.forEach(function(ch){ch.classList.add('on')});var e=$('pre');if(e)e.classList.add('on');var bt=$('btap');if(bt)bt.style.opacity=1;ready=true}
+  timers.push(setTimeout(finish,t+500));
+  d.onclick=function(){if(!ready){finish();return}d.onclick=null;d.classList.add('slam');setTimeout(function(){go(c.next)},600)};
+}
+/* ======================= ДОСЬЕ ======================= */
+var ORDER=Object.keys(STORY);
+function reached(id){if(S.done||(S.seen&&S.seen[id]))return true;var a=ORDER.indexOf(S.scene),b=ORDER.indexOf(id);return a>=0&&b>=0&&a>=b}
+var DOS=[
+ {k:'boss',at:'o2',t:'Начальница',f:function(){return ['Последний рабочий день. Поднимает кружку — чай не дымится, по краю иней.','Объявила: Новый год празднуем у Ксюши. Всем отделом.','Гостей двенадцать. Со шпицем Бароном — тринадцать.']},q:'Почему у неё в кружке иней?'},
+ {k:'note',at:'zap',t:'Записка',f:function(){return ['Прилипла к сапогу на улице. Края обуглены.','«Плита есть? Духовка есть? Значит, справишься. Готовить будешь не ты — жар и время».','Подписи нет. Пахнет костром. На обороте — стрелка в переулок.']},q:'Кто её написал?'},
+ {k:'egg',at:'zap0',t:'Яйцо',f:function(){var a=['Лежало в снегу рядом с запиской. Крашеное.'];if(reached('fin2')&&S.seen&&S.seen.egg2||S.done)a.push('Под лупой на нём мелкая надпись: «Ты справишься».');else a.push('Надо рассмотреть получше…');return a},q:'Кто пишет эти слова?'},
+ {k:'chef',at:'s4',t:'Шеф',f:function(){return ['Бистро без вывески в конце переулка. Плита и духовка самые обычные.','На полках всё ровными рядами, как на линейке. У плиты — ведро гладиолусов.','«Тишина в классе». Двадцать лет классного руководства.','Своё имя не назвал: «Если присмотришься — догадаешься».']},q:'Как зовут шефа?'},
+ {k:'table',at:'t1',t:'Стол на восьмерых',f:function(){return ['Восемь тарелок. Каждое блюдо — один урок.','«Я — первый. Остальных найдёте сами».','Заполнишь все восемь — откроется то, что под клошем.']},q:'Кто остальные семеро?'},
+ {k:'dish',at:'hw',t:'Блюдо первого урока',f:function(){var a=['Мясо и картошка. Твоих рук — минут пятнадцать, остальное сделают жар и время.'];if(S.guess&&S.guess.g1)a.push('Название разгадано: <span class="dok">'+esc(S.guess.g1)+' ✓</span>');else a.push('Название — в кроссворде Шефа (задачка со звёздочкой).');return a},q:'Что я хочу запомнить к уроку?'}
+];
+function dosCount(){return DOS.filter(function(d){return reached(d.at)}).length}
+function dosUpdate(){var b=$('dosbtn');if(!b)return;var n=dosCount();b.hidden=!n||curId==='start';
+  if(S.dosN!==undefined&&n>S.dosN){b.classList.add('new');toast('📁 В досье новая карточка')}S.dosN=Math.max(S.dosN||0,n)}
+function dosOpen(){S.notes=S.notes||{};var h='<div class="dwrap"><div class="dhead"><div class="dtitle">📁 Досье</div><button class="dclose" id="dclose">Закрыть ✕</button></div><div class="dsub">Улики, которые мы нашли. Записывай свою версию — она сохранится.</div>';
+  DOS.forEach(function(d){if(!reached(d.at)){h+='<div class="dcard lock"><h4>🔒 ???</h4><small>Откроется по ходу истории</small></div>';return}
+   h+='<div class="dcard"><h4>'+d.t+'</h4><ul>'+d.f().map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul><div class="dq">'+d.q+'</div><textarea data-k="'+d.k+'" placeholder="Моя версия…"></textarea></div>'});
+  var box=$('dos');box.innerHTML=h+'</div>';box.hidden=false;box.scrollTop=0;$('dosbtn').classList.remove('new');
+  box.querySelectorAll('textarea').forEach(function(t){t.value=S.notes[t.dataset.k]||'';t.oninput=function(){S.notes[t.dataset.k]=t.value;save()}});
+  $('dclose').onclick=function(){box.hidden=true}}
+$('dosbtn').onclick=dosOpen;
+function restart(){hist=[];curId=null;var keepName=S.name;S={name:keepName,scene:'start',guess:S.guess,stars:S.stars,list1:S.list1,notes:S.notes,seen:S.seen,dosN:S.dosN,done:false};STORY.home._picked=false;STORY.home.text=['Ночь. Ты дома одна.'];save();lastImg='';go('start')}
+$('restart').onclick=function(){if(confirm('Начать пролог сначала? Твоя догадка сохранится.'))restart()};
+
+/* ======================= 4. ДОБЫЧА ПРОДУКТОВ ======================= */
+var LIST1={title:'Продукты к 1 декабря',sub:'на 4 порции',items:[
+ ['Мясо одним куском на выбор','800 г','свиная шея (как в уроке), баранья или говяжья лопатка'],
+ ['Картофель','1 кг'],['Репчатый лук','2 крупные луковицы (~300 г)'],
+ ['Бульон мясной или овощной','400–500 мл'],['Чеснок','4 зубчика'],['Сливочное масло','40 г'],
+ ['Тимьян','4–5 веточек или 1 ч. л. сушёного'],['Лавровый лист','2 шт.'],['Соль, чёрный перец','по вкусу']]};
+
+function shell(html){ // экран задачи поверх размытого фона
+  vidScene('');setBg('img/shef-1.webp');$('stage').classList.add('cardmode');click.style.display='none';
+  layer.innerHTML='<div class="game">'+(hist.length?'<button class="back" id="gbk" style="position:static;margin:0 0 8px">‹ назад</button>':'')+html+'</div>';panel.innerHTML='';var gb=document.getElementById('gbk');if(gb)gb.onclick=function(){if(window._catchStop)window._catchStop();back()};
+  document.documentElement.style.setProperty('--ph','0px');
+}
+var GAMES={
+ shelf:function(c){
+  // решение (ряд,столбец): верх — тимьян, мясо, лавр; середина — лук, картошка, чеснок; низ — масло, бульон, перец
+  var ITEMS=[['meat','🥩','Мясо','0-1'],['pot','🥔','Картошка','1-1'],['onion','🧅','Лук','1-0'],['garlic','🧄','Чеснок','1-2'],['butter','🧈','Масло','2-0'],['broth','🍲','Бульон','2-1'],['thyme','🌿','Тимьян','0-0'],['bay','🍃','Лавр','0-2'],['pepper','🌶️','Перец','2-2']];
+  var place={},sel=null,hints=0;
+  shell('<div class="gt"><span class="who chef">Шеф</span><div>Задачка на смекалку. В шкафу три полки, <b>на каждой по три места</b>. Расставь всех девятерых.</div><ol>'+
+   '<li>Картошка стоит прямо под мясом.</li>'+
+   '<li>Лук — сосед картошки по полке, слева от неё.</li>'+
+   '<li>Масло стоит прямо под луком.</li>'+
+   '<li>Бульон — между маслом и перцем.</li>'+
+   '<li>Тимьян левее лавра.</li></ol><small>Нажми на продукт, потом на место в шкафу. Нажми на занятое место — продукты поменяются.</small></div>'+
+   '<div class="cab" id="cab">'+[0,1,2].map(function(r){return '<div class="crow">'+[0,1,2].map(function(c){return '<div class="cell" data-cell="'+r+'-'+c+'"></div>'}).join('')+'</div>'}).join('')+'</div>'+
+   '<div class="tray" id="tray"></div><button class="btn main" id="chk">Проверить</button><button class="btn" id="hint" style="margin-top:8px;text-align:center">Подсказка</button><div class="gmsg" id="gmsg"></div>');
+  function who(cell){for(var k in place)if(place[k]===cell)return k;return null}
+  function byId(id){return ITEMS.filter(function(it){return it[0]===id})[0]}
+  function draw(){
+   layer.querySelectorAll('.cell').forEach(function(el){el.innerHTML=''});$('tray').innerHTML='';
+   ITEMS.forEach(function(it){var b=document.createElement('button');b.className='itm'+(sel===it[0]?' sel':'')+(it.lock?' lock':'');b.innerHTML=it[1]+'<span>'+it[2]+'</span>';
+     b.onclick=function(e){e.stopPropagation();
+       if(sel&&sel!==it[0]&&place[it[0]]){if(it.lock)return;var cell=place[it[0]],from=place[sel];place[sel]=cell;if(from)place[it[0]]=from;else delete place[it[0]];sel=null;$('gmsg').textContent='';draw();return}
+       if(it.lock)return;sel=(sel===it[0]?null:it[0]);draw()};
+     var host=place[it[0]]?layer.querySelector('[data-cell="'+place[it[0]]+'"]'):$('tray');host.appendChild(b)});
+  }
+  layer.querySelectorAll('.cell').forEach(function(el){el.onclick=function(){if(!sel)return;var cell=el.dataset.cell,o=who(cell);
+    if(o){if(byId(o).lock)return;var from=place[sel];if(from)place[o]=from;else delete place[o]}
+    place[sel]=cell;sel=null;$('gmsg').textContent='';draw()}});
+  $('tray').onclick=function(){if(sel&&!byId(sel).lock){delete place[sel];sel=null;draw()}};
+  $('hint').onclick=function(){
+   var wrong=ITEMS.filter(function(it){return place[it[0]]!==it[3]&&!it.lock});
+   if(!wrong.length)return;var it=wrong[0],o=who(it[3]);
+   if(o){var from=place[it[0]];if(from)place[o]=from;else delete place[o]}
+   place[it[0]]=it[3];it.lock=true;hints++;sel=null;draw();
+   $('gmsg').innerHTML='Подсказка: <b>'+it[2]+'</b> — на своём месте.';
+  };
+  $('chk').onclick=function(){
+   if(Object.keys(place).length<ITEMS.length){$('gmsg').textContent='Не всё расставлено. Кто остался на подносе?';return}
+   var miss=ITEMS.filter(function(it){return place[it[0]]!==it[3]}).length;
+   if(miss){$('gmsg').innerHTML='Не сходится: <b>'+miss+' '+plural(miss,'продукт','продукта','продуктов')+'</b> не на своих местах. Перечитай условие.';return}
+   $('gmsg').innerHTML='<b>'+(hints?'Решено! Садись, четыре с плюсом.':'Отлично! Садись, пять.')+'</b>';setTimeout(function(){go(c.next)},1100);
+  };
+  draw();
+ },
+ cross:function(c){
+  // слово-ключ БУЛАНЖЕР по вертикали; третий элемент — индекс буквы ключа в слове
+  var W=[['Им заливают мясо с картошкой, чтобы не пересохли','БУЛЬОН',0],['Режешь — плачешь','ЛУК',1],['Лист, который кладут в блюдо, а потом вынимают','ЛАВР',0],['Сливочное, кусочками сверху','МАСЛО',1],
+         ['Зубчики, но не у пилы','ЧЕСНОК',3],['«Твоих рук — пятнадцать минут, остальное сделают ... и время»','ЖАР',0],['Кусок свиньи, который Шеф берёт на урок','ШЕЯ',1],['Её режут кружочками и ставят рядами','КАРТОФЕЛЬ',2]];
+  var KC=3,COLS=10,done={};
+  var grid='<div class="xw" id="xw">'+W.map(function(w,r){var st=KC-w[2],h='<div class="xr" data-r="'+r+'"><span class="xn">'+(r+1)+'</span>';
+    for(var x=0;x<COLS;x++){var i=x-st;h+=(i>=0&&i<w[1].length)?'<input class="xc'+(x===KC?' key':'')+'" data-r="'+r+'" data-i="'+i+'" maxlength="1" autocomplete="off" autocapitalize="characters" spellcheck="false" inputmode="text">':'<span class="xe"></span>'}
+    return h+'</div>'}).join('')+'</div>';
+  shell('<div class="gt"><span class="who chef">Шеф</span><div>Кроссворд со звёздочкой. Разгадай все слова — и в <b>золотом столбце</b> сложится название блюда первого декабря.</div><small>Нажми на клетку и печатай. Слово разгадано — строка загорится.</small></div>'+
+   grid+'<ol class="xq" id="xq">'+W.map(function(w,r){return '<li data-r="'+r+'">'+w[0]+' <i>('+w[1].length+')</i></li>'}).join('')+'</ol>'+
+   '<button class="btn" id="xh" style="text-align:center">Подсказка — открыть слово</button><div class="gmsg" id="gmsg"></div>');
+  var cells=[].slice.call(layer.querySelectorAll('.xc'));
+  function rowCells(r){return cells.filter(function(e){return +e.dataset.r===r})}
+  function norm(v){return (v||'').toUpperCase().replace(/Ё/g,'Е').replace(/[^А-Я]/g,'')}
+  function check(r){var rc=rowCells(r),w=W[r][1],val=rc.map(function(e){return e.value}).join('');
+    if(val.length<w.length)return;
+    var row=layer.querySelector('.xr[data-r="'+r+'"]');
+    if(val===w){done[r]=true;row.classList.add('ok');rc.forEach(function(e){e.readOnly=true});layer.querySelector('#xq li[data-r="'+r+'"]').classList.add('ok');
+      var nx=cells.filter(function(e){return !done[+e.dataset.r]&&!e.value})[0];if(nx)nx.focus();
+      if(Object.keys(done).length===W.length)win()}
+    else{row.classList.remove('bad');void row.offsetWidth;row.classList.add('bad')}}
+  cells.forEach(function(e){
+    e.onfocus=function(){layer.querySelectorAll('#xq li').forEach(function(li){li.classList.toggle('on',li.dataset.r===e.dataset.r)})};
+    e.oninput=function(){var v=norm(e.value);e.value=v.slice(-1);if(e.value){var rc=rowCells(+e.dataset.r),j=rc.indexOf(e);if(j<rc.length-1)rc[j+1].focus();check(+e.dataset.r)}};
+    e.onkeydown=function(ev){if(ev.key==='Backspace'&&!e.value){var rc=rowCells(+e.dataset.r),j=rc.indexOf(e);if(j>0&&!rc[j-1].readOnly){rc[j-1].value='';rc[j-1].focus();ev.preventDefault()}}};
+  });
+  $('xh').onclick=function(){var r=W.map(function(w,i){return i}).filter(function(i){return !done[i]})[0];if(r===undefined)return;
+    rowCells(r).forEach(function(e,i){e.value=W[r][1][i]});check(r)};
+  function win(){
+    $('xh').style.display='none';
+    $('gmsg').innerHTML='<div class="xans">БУЛАНЖЕР</div><b>Отличница!</b> Это и есть блюдо первого декабря.<button class="btn main" id="xgo" style="margin-top:10px">Сдать Шефу ⭐</button>';
+    $('xgo').onclick=function(){S.guess.g1='Буланжер';S.stars=S.stars||{};S.stars.g1=true;save();go(c.next)};
+  }
+ },
+ catch:function(c){
+  var GOOD=['🥩','🥔','🧅','🧄','🧈','🌿'],BAD=['🍫','🍕','🍬','🥫','🧃','🍔'],NEED=10,TIME=30;
+  shell('<div class="gt"><span class="who chef">Шеф</span><div>Лови в корзину только то, что пойдёт в дело: мясо, картошку, лук, чеснок, масло и зелень. Сладкое и фастфуд — мимо! Нужно <b>'+NEED+'</b> продуктов за '+TIME+' секунд.</div><small>Води корзину пальцем по полю.</small></div>'+
+   '<div class="field" id="fieldc"><div class="hud"><span id="cnt">0 / '+NEED+'</span><span id="tm">'+TIME+'</span></div><div class="basket" id="bsk">🧺</div></div><button class="btn main" id="gobtn">Поехали!</button><div class="gmsg" id="gmsg"></div>');
+  var fld=$('fieldc'),bsk=$('bsk'),run=false,got=0,left=TIME,drops=[],bx=50,raf,tick,spawnT;
+  function setX(px){var r=fld.getBoundingClientRect();bx=Math.max(8,Math.min(92,(px-r.left)/r.width*100));bsk.style.left=bx+'%'}
+  fld.addEventListener('pointermove',function(e){if(run)setX(e.clientX)});
+  fld.addEventListener('pointerdown',function(e){if(run)setX(e.clientX)});
+  fld.addEventListener('touchmove',function(e){if(run){setX(e.touches[0].clientX);e.preventDefault()}},{passive:false});
+  function spawn(){var good=Math.random()<.62,el=document.createElement('div');el.className='drop';el.textContent=(good?GOOD:BAD)[Math.random()*6|0];
+    var x=6+Math.random()*88;el.style.left=x+'%';fld.appendChild(el);drops.push({el:el,x:x,y:-8,v:.55+Math.random()*.5+(TIME-left)*.012,good:good})}
+  function loop(){
+    for(var i=0;i<drops.length;i++){var d=drops[i];d.y+=d.v;d.el.style.top=d.y+'%';
+      if(!d.hit&&d.y>78&&d.y<90&&Math.abs(d.x-bx)<11){d.hit=true;d.el.remove();
+        if(d.good){got++;flash('+1')}else{got=Math.max(0,got-1);flash('мимо!')} $('cnt').textContent=got+' / '+NEED;
+        if(got>=NEED){win();return}}
+      if(d.y>104&&!d.hit){d.hit=true;d.el.remove()}}
+    drops=drops.filter(function(d){return !d.hit});
+    if(run)raf=requestAnimationFrame(loop);
+  }
+  function flash(t){var f=document.createElement('div');f.className='pop';f.textContent=t;f.style.left=bx+'%';fld.appendChild(f);setTimeout(function(){f.remove()},600)}
+  function stop(){run=false;cancelAnimationFrame(raf);clearInterval(tick);clearInterval(spawnT);drops.forEach(function(d){d.el.remove()});drops=[]}
+  function win(){stop();$('gmsg').innerHTML='<b>Корзина полная! Садись, пять.</b>';setTimeout(function(){go(c.next)},900)}
+  $('gobtn').onclick=function(){
+    if(run)return;got=0;left=TIME;$('cnt').textContent='0 / '+NEED;$('tm').textContent=left;$('gmsg').textContent='';this.textContent='Ещё раз';
+    run=true;raf=requestAnimationFrame(loop);spawnT=setInterval(spawn,520);
+    tick=setInterval(function(){left--;$('tm').textContent=left;if(left<=0){stop();$('gmsg').innerHTML='Время вышло: '+got+' из '+NEED+'. Не беда — попробуй ещё раз!'}},1000);
+  };
+  window._catchStop=stop;
+ }
+};
+
+function listScene(c){
+  S.list1=true;save();sfx('sfx-chime',.6);
+  shell('<div class="plist"><div class="pk">Список покупок</div><h3>'+LIST1.title+'</h3><div class="ps">'+LIST1.sub+'</div><ul>'+
+   LIST1.items.map(function(i){return '<li><b>'+i[0]+'</b> — '+i[1]+(i[2]?'<small>'+i[2]+'</small>':'')+'</li>'}).join('')+
+   '</ul><div class="pn">Точные граммовки и все шаги — в уроке 1 декабря.</div></div>'+
+   '<button class="btn main" id="psave">Сохранить картинкой</button><button class="btn" id="pcopy" style="margin-top:8px;text-align:center">Скопировать текстом</button><button class="btn" id="pnext" style="margin-top:8px;text-align:center">Дальше ▸</button>');
+  $('pnext').onclick=function(){go(S.done?'end':c.next)};
+  var txt=LIST1.title+' ('+LIST1.sub+'):\n'+LIST1.items.map(function(i){return '— '+i[0]+' — '+i[1]+(i[2]?' ('+i[2]+')':'')}).join('\n');
+  $('pcopy').onclick=function(){function ok(){toast('Список скопирован')}
+    function fb(){var t=document.createElement('textarea');t.value=txt;document.body.appendChild(t);t.select();try{document.execCommand('copy');ok()}catch(e){}t.remove()}
+    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(txt).then(ok,fb);else fb()};
+  $('psave').onclick=function(){(document.fonts?document.fonts.ready:Promise.resolve()).then(function(){
+    var W=1080,cv=document.createElement('canvas'),x=cv.getContext('2d'),H=480+LIST1.items.length*96+240;cv.width=W;cv.height=H;
+    var g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,'#F7EBD3');g.addColorStop(1,'#EAD5AE');x.fillStyle=g;x.fillRect(0,0,W,H);
+    x.strokeStyle='rgba(90,45,15,.35)';x.lineWidth=18;x.strokeRect(9,9,W-18,H-18);
+    x.fillStyle='#3A1E0E';x.textAlign='center';x.font='700 76px "Cormorant Garamond"';x.fillText(LIST1.title,W/2,190);
+    x.font='700 46px Caveat';x.fillStyle='#8A4A22';x.fillText('Ленивая хозяйка 2.0 · '+LIST1.sub,W/2,260);
+    x.textAlign='left';var y=380;LIST1.items.forEach(function(i){x.strokeStyle='#9B7E66';x.lineWidth=5;x.strokeRect(110,y-40,42,42);
+      x.fillStyle='#3A1E0E';x.font='700 44px Inter';x.fillText(i[0],180,y);x.font='500 36px Inter';x.fillStyle='#7A5A40';x.fillText(i[1],180,y+44);if(i[2]){x.font='italic 500 29px Inter';x.fillText(i[2],180,y+84);y+=52}y+=96});
+    x.textAlign='center';x.font='600 30px Inter';x.fillStyle='#8C6A50';x.fillText('Клуб Планета X',W/2,H-80);
+    cv.toBlob(function(bl){var f=new File([bl],'produkty-1-dekabrya.png',{type:'image/png'});
+      if(matchMedia('(pointer:coarse)').matches&&navigator.canShare&&navigator.canShare({files:[f]}))navigator.share({files:[f]}).catch(function(){});
+      else{var a=document.createElement('a');a.href=URL.createObjectURL(bl);a.download='produkty-1-dekabrya.png';document.body.appendChild(a);a.click();a.remove();toast('Картинка в папке «Загрузки»')}})})};
+}
+
+
+/* ======================= 5. ССЫЛКА-СОХРАНЕНИЕ ======================= */
+function b64e(o){return btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')}
+function b64d(t){t=t.replace(/-/g,'+').replace(/_/g,'/');while(t.length%4)t+='=';return JSON.parse(decodeURIComponent(escape(atob(t))))}
+function saveLink(){
+  var data={n:S.name,g:S.guess,st:S.stars||{},l:!!S.list1,d:!!S.done};
+  var url=location.href.split('#')[0]+'#save='+b64e(data);
+  function ok(){toast('Ссылка скопирована — отправь её себе')}
+  if(matchMedia('(pointer:coarse)').matches&&navigator.share){navigator.share({title:'Мой прогресс — Ленивая хозяйка 2.0',url:url}).catch(function(){});return}
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(url).then(ok,function(){prompt('Скопируй ссылку:',url)});else prompt('Скопируй ссылку:',url);
+}
+(function restoreFromLink(){
+  var m=location.hash.match(/save=([\w-]+)/);if(!m)return;
+  try{var d=b64d(m[1]);
+    if(confirm('Восстановить прогресс'+(d.n?' «'+d.n+'»':'')+' на этом устройстве?')){
+      S.name=d.n||S.name;S.guess=d.g||{};S.stars=d.st||{};S.list1=!!d.l;S.done=!!d.d;S.scene=d.d?'end':'start';save();}
+  }catch(e){}
+  history.replaceState(null,'',location.href.split('#')[0]);
+})();
+
+snowInit();
+// предзагрузка картинок
+['ksyusha','ofis','doma','gorod','zapiska','shef-1','stol','tarelka','klosh'].forEach(function(n){var i=new Image();i.src='img/'+n+'.webp'});
+// продолжить с места
+function begin(on){$('intro').classList.add('off');$('sndbtn').hidden=false;setSound(on);go(S.done?'end':(S.scene==='_q'?'secret':(STORY[S.scene]&&S.scene!=='home'?S.scene:'start')))}
+$('sndOn').onclick=function(){begin(true)};$('sndOff').onclick=function(){begin(false)};
+$('sndbtn').onclick=function(){setSound(!SND.on)};
+if(/[?&]nointro/.test(location.search))begin(false);
+</script>
+</body>
+</html>
