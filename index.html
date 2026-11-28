@@ -151,6 +151,8 @@ a.row.live{text-decoration:none}
 .again{display:block;margin:22px auto 0;background:none;border:1.5px solid rgba(246,217,168,.35);color:#F6D9A8;font:600 14px Inter,system-ui,sans-serif;border-radius:12px;padding:10px 16px;cursor:pointer}
 .club{text-align:center;font-size:12px;color:#8C7F8F;margin-top:26px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.c,.fade,.note .w,.after{opacity:1;filter:none}}
+.chatpill{position:absolute;left:4%;bottom:12%;z-index:4;display:inline-block;background:rgba(20,12,8,.82);border:1.5px solid rgba(233,201,142,.55);color:#FFE6C4;font:700 3.4cqw Inter,sans-serif;border-radius:4cqw;padding:2.2cqw 3.6cqw;text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.5)}
+.chatbtn{display:block;text-align:center;text-decoration:none;margin-top:8px}
 </style>
 </head>
 <body>
@@ -175,6 +177,7 @@ a.row.live{text-decoration:none}
     <svg class="wires" id="wires" preserveAspectRatio="none"></svg>
     <div id="envs"></div>
     <div class="atip" id="atip"></div>
+    <a class="chatpill" href="https://xplanet.club/chat/tema-lenivaya-hozyayka" target="_blank" rel="noopener">💬 Чат темы</a>
   </div>
 </section>
 
@@ -210,6 +213,7 @@ a.row.live{text-decoration:none}
       <button class="btn" id="save">Сохранить картинкой</button>
       <button class="btn ghost" id="copy">Скопировать текстом</button>
       <button class="btn ghost" id="back">Изменить отметки</button>
+      <a class="btn ghost chatbtn" href="https://xplanet.club/chat/tema-lenivaya-hozyayka" target="_blank" rel="noopener">💬 Обсудить в чате темы</a>
       <p class="burnt" id="burnt">Кому адресована записка — узнаем 29 ноября</p>
       <p class="after" id="after">Что приготовят из этого списка — пока секрет.</p>
     </section>
